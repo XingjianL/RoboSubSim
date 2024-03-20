@@ -16,6 +16,7 @@ public class PROCESS_CODES{
     public const byte CHANGED_REPLY = 13;
     
 }
+
 public class CommandPacket{
     public byte[] body; // include id, body, crc
     public int body_counter;
@@ -207,6 +208,15 @@ public class CommandPacket{
                         process_code = PROCESS_CODES.CHANGED_REPLY;
                         break;
                     // simulation environment commands
+                    case "SIMCBTOGU":
+                        bool _simcb_connect = true;
+                        if (body[11] == 0b0000_0000) {
+                            _simcb_connect = false;
+                        }
+                        sceneManagement.simCBRefresh = true;
+                        sceneManagement.simCBToggle = _simcb_connect;
+                        process_code = PROCESS_CODES.UNITY_REPLY;
+                        break;
                     case "CAPTUREU":
                         if (sceneManagement.getCameraMode() == body[10]){
                             sceneManagement.captureImage(body[10]);
@@ -223,8 +233,9 @@ public class CommandPacket{
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
                     case "SETENVU":
-                        sceneManagement.sceneSelect = body[8];
-                        sceneManagement.ResetScene();
+                        sceneManagement.sceneSelect = body[9];
+                        sceneManagement.sceneRefresh = true;
+                        //sceneManagement.ResetScene();
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
                     case "ROBOTSELU":
@@ -327,7 +338,7 @@ public class TCPServer : MonoBehaviour
             // other commands
             "SASSISTTN",
             // unity commands
-            "CAPTUREU", "SETENVU", "CAMCFGU", "ROBOTSELU", "ROBOTCFGU", "RANDENVU", "SIMCBU",
+            "CAPTUREU", "SETENVU", "CAMCFGU", "ROBOTSELU", "ROBOTCFGU", "RANDENVU", "SIMCBTOGU",
             // acknowledge
             "ACK",
             // simCB
@@ -352,7 +363,7 @@ public class TCPServer : MonoBehaviour
 
     private Thread threadSimCB;
     public bool simCB_Connect = false;
-    public string simCB_IPAddr = "172.27.160.1";
+    //public string simCB_IPAddr = "172.27.160.1";
     public int simCB_Port = 5014;
     public bool simCB_Connected = false;
     TcpClient simCB_client;
@@ -402,7 +413,7 @@ public class TCPServer : MonoBehaviour
         //print(runServer);
 
         if (simCB_Connect && !simCB_Connected) {
-            simCB_client = new TcpClient(simCB_IPAddr, simCB_Port);
+            simCB_client = new TcpClient("127.0.0.1", simCB_Port);
             simCB_client.ReceiveBufferSize = receive_buffer_size;
             simCB_Connected = true;
             threadSimCB = new Thread(() => GetDataSimCB());
@@ -594,6 +605,7 @@ public class TCPServer : MonoBehaviour
                             break;
                         case (PROCESS_CODES.SIMCB_REPLY | PROCESS_CODES.UNITY_REPLY):
                             Debug.Log("Processed command for Unity");
+                            
                             break;
                         case (PROCESS_CODES.SIMCB_REPLY | PROCESS_CODES.CHANGED_REPLY):
                             simCB_sendCommandsPool.Add(new CommandPacket(sceneManagement,
@@ -622,6 +634,13 @@ public class TCPServer : MonoBehaviour
                         switch (process_code) {
                             case (PROCESS_CODES.UNITY_REPLY):
                                 Debug.Log("Processed command for Unity");
+                                sendCommandsPool.Add(new CommandPacket(sceneManagement,
+                                    id: 0,
+                                    header:commandsHeader["ACK"],
+                                    data: new byte[] {receiveCommandsPool[receiveCommandsPool.Count-1].body[0],
+                                                      receiveCommandsPool[receiveCommandsPool.Count-1].body[1],
+                                                      0}
+                                    ));
                                 break;
                             default:
                                 Debug.Log("Copying rust command to simCB send pool");
@@ -637,22 +656,20 @@ public class TCPServer : MonoBehaviour
                         // Rust only
                         // TODO: Modify this for asking sim cb connection and inital startup
                         byte process_code = receiveCommandsPool[receiveCommandsPool.Count-1].processCommand(commandsHeader);
-                        if (process_code < 5) {
-                            sendCommandsPool.Add(
-                                new CommandPacket(sceneManagement, 
-                                                id: 0,
-                                                header: commandsHeader["ACK"], 
-                                                data: new byte[] {
-                                                    receiveCommandsPool[receiveCommandsPool.Count-1].body[0],
-                                                    receiveCommandsPool[receiveCommandsPool.Count-1].body[1],
-                                                    process_code
-                                                }));
-                            sendCommandsPool.Add(
-                                new CommandPacket(sceneManagement, 
-                                                id: 10, 
-                                                header: commandsHeader["WDGS"], 
-                                                data: new byte[] {1}//imu_buf
-                                                ));
+                        switch (process_code) {
+                            case (PROCESS_CODES.UNITY_REPLY):
+                                Debug.Log("Processed command for Unity");
+                                sendCommandsPool.Add(new CommandPacket(sceneManagement,
+                                    id: 0,
+                                    header:commandsHeader["ACK"],
+                                    data: new byte[] {receiveCommandsPool[receiveCommandsPool.Count-1].body[0],
+                                                      receiveCommandsPool[receiveCommandsPool.Count-1].body[1],
+                                                      0}
+                                    ));
+                                break;
+                            default:
+                                Debug.LogWarning("Received SimCB Command but SimCB is not connected");
+                                break;
                         }
                     }
                     receiveCommandsPool.RemoveAt(receiveCommandsPool.Count-1);

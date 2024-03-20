@@ -12,8 +12,8 @@ public class RobotForce : MonoBehaviour
     public Rigidbody m_rigidBody;
     const float KGF_TO_N = 9.80665f;
     const float MAX_FORCE = 2.36f*KGF_TO_N;
-    public int[] robot_unity_mapping; // = {3, 4, 1, 2, 7, 8, 5, 6}; // whats the motor id in the real robot w.r.t. the robot in documentation
-    public int[] unity_inverts; //= {1,1,1,1,1,1,1,1}; // whats the direction [1 or -1] of the force w.r.t. the robot in documentation
+    public int[] robot_unity_mapping; // whats the motor id in the real robot w.r.t. the robot in documentation
+    public int[] unity_inverts; // whats the direction [1 or -1] of the force w.r.t. the robot in documentation
     public float[] thrust_strengths = {0f,0f,0f,0f,0f,0f,0f,0f};
 
     // unity_robot_transform:realrobot, [right:front,forward:left,up:up,r,p,y]

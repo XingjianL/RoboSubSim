@@ -41,6 +41,8 @@ public class SceneManagement : MonoBehaviour
                                                 "Scenes/OutdoorsScene"};
     public bool sceneRefresh = false;
     public int sceneSelect = 0;
+    public bool simCBRefresh = false;
+    public bool simCBToggle = false;
     public IEnumerator ResetSceneCoroutine(){
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneLists[sceneSelect]);
         while(!asyncLoad.isDone){
@@ -71,6 +73,10 @@ public class SceneManagement : MonoBehaviour
         if (sceneRefresh) {
             ResetScene();
         }
+        if (simCBRefresh){
+            simCBRefresh = false;
+            setupSimCBConnect(simCBToggle);
+        }
     }
     /// <summary>
     /// TCP Server stuff
@@ -81,10 +87,9 @@ public class SceneManagement : MonoBehaviour
     public void setupTCPServer( string IPAddr = "127.0.0.1", 
                                 int port = 1234, 
                                 bool runServer = false, 
-                                float msPerTransmit = 11.0f){
+                                float msPerTransmit = 5.0f){
         loadTCPServer();
         tcpServer.IPAddr = IPAddr;
-        //tcpServer.simCB_IPAddr = IPAddr;
         tcpServer.port = port;
         tcpServer.runServer = runServer;
         tcpServer.msPerTransmit = msPerTransmit;
@@ -95,6 +100,7 @@ public class SceneManagement : MonoBehaviour
         ui_script.SendFreq.text = msPerTransmit.ToString();
     }
     public void setupSimCBConnect(bool simCB_Connect){
+        Debug.Log("SimCB Connect Attempt: " + simCB_Connect);
         tcpServer.simCB_Connect = simCB_Connect;
         ui_script.runSimCB.isOn = simCB_Connect;
     }
