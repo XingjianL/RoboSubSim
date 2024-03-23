@@ -43,6 +43,7 @@ public class SceneManagement : MonoBehaviour
     public int sceneSelect = 0;
     public bool simCBRefresh = false;
     public bool simCBToggle = false;
+    public List<string> allCommandsReceived = new List<string>();
     public IEnumerator ResetSceneCoroutine(){
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneLists[sceneSelect]);
         while(!asyncLoad.isDone){
@@ -205,6 +206,10 @@ public class SceneManagement : MonoBehaviour
         //GameObject robot = selectObject(ROBOT, robotID);
         RobotIMU script = allRobots[robotID].imuScript;
         return script.imu;
+    }
+    public RobotForce getRobotForces(int robotID = 0){
+        RobotForce script = allRobots[robotID].controlScript;
+        return script;
     }
     
     /// <summary>

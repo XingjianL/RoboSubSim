@@ -61,7 +61,9 @@ public class CommandPacket{
         body = new byte[bodyLen];
         
         byte[] id_bytes = System.BitConverter.GetBytes(id);
+        
         System.Array.Reverse(id_bytes);
+        //Debug.Log("create command with id: " + System.BitConverter.ToUInt16(new byte[]{id_bytes[1], id_bytes[0]}, 0));
         System.Buffer.BlockCopy(id_bytes, 0, body, 0, 2);
         System.Buffer.BlockCopy(header, 0, body, 2, header.Length);
         System.Buffer.BlockCopy(data, 0, body, 2 + header.Length, data.Length);
@@ -157,12 +159,15 @@ public class CommandPacket{
         foreach (KeyValuePair<string, byte[]> command in commands) {
             if (isCommand(command.Value)) {
                 is_command = true;
-                Debug.Log("Received Command: " + command.Key);
+                Debug.Log("Received Command: " + command.Key + " ID: " + System.BitConverter.ToUInt16(new byte[] {body[1], body[0]}, 0));
+                if (System.BitConverter.ToUInt16(new byte[] {body[1], body[0]}, 0) < 20000){
+                    sceneManagement.allCommandsReceived.Add(command.Key);
+                }
                 switch(command.Key){
                     case "SIMSTAT":
                         //Debug.Log("SIMSTAT: " + ToString());
                         float[] motor_power = ParseFloats(body, 8, 9);
-                        Debug.Log("Vals: " + string.Join(",", motor_power) + " Mode: " + body[body.Length-4] + " WDog Status: " + body[body.Length-3]);
+                        //Debug.Log("Vals: " + string.Join(",", motor_power) + " Mode: " + body[body.Length-4] + " WDog Status: " + body[body.Length-3]);
                         if (body[body.Length-3] == 1){
                             process_code = PROCESS_CODES.SIM_DATA;
                             break;
@@ -255,6 +260,7 @@ public class CommandPacket{
         }
         if (!is_command) {
             Debug.Log("Unknown Command (sending to simCB if possible). Bytes: " + ToString());
+            sceneManagement.allCommandsReceived.Add("unCom: " + ToString());
         }
         
         //ParseFloats(body,1,0);
@@ -334,7 +340,7 @@ public class TCPServer : MonoBehaviour
     readonly string[] POSSIBLE_COMMANDS = new string[] {
             // control board commands
             "RAW", "LOCAL", "GLOBAL", "RELDOF", "BNO055P", "MS5837P", "WDGS", "BNO055R", "MS5837R",
-            "MMATS", "MMATU", "TINV", "BNO055A", "WDGF",
+            "MMATS", "MMATU", "TINV", "BNO055A", "WDGF", "SASSIST2",
             // other commands
             "SASSISTTN",
             // unity commands
@@ -444,7 +450,7 @@ public class TCPServer : MonoBehaviour
     void SimData(IMU imu, ushort simCB_id = 60000){
         byte[] simCB_imu_data = new byte[20];
         //Debug.Log("Little Endian: " + System.BitConverter.IsLittleEndian);
-        Debug.Log("IMU (xyzw): " + imu.robotRotation + " Depth: " + imu.robotPosition.z);
+        //Debug.Log("IMU (xyzw): " + imu.robotRotation + " Depth: " + imu.robotPosition.z);
         System.Buffer.BlockCopy(System.BitConverter.GetBytes(
                                 imu.robotRotation.w), 0, simCB_imu_data, 0, 4);
         System.Buffer.BlockCopy(System.BitConverter.GetBytes(
@@ -596,6 +602,7 @@ public class TCPServer : MonoBehaviour
                                 Debug.Log("simCB robot IMU packet");
                                 SimData(sceneManagement.getRobotIMU(), simCB_ID);
                                 simCB_ID += 1;
+                                if (simCB_ID > 65000) {simCB_ID = 60000;}
                             }
                             if (simCB_imu_currentTime > SIMCB_IMU_INTERVAL){ 
                                 simCB_imu_currentTime = 0;

@@ -8,8 +8,7 @@ public class RobotForce : MonoBehaviour
     public float strength = 2.36f;
     public bool forceVisual = true;
     public Material forceVisualMaterial;
-    [HideInInspector]
-    public Rigidbody m_rigidBody;
+    [HideInInspector] public Rigidbody m_rigidBody;
     const float KGF_TO_N = 9.80665f;
     const float MAX_FORCE = 2.36f*KGF_TO_N;
     public int[] robot_unity_mapping; // whats the motor id in the real robot w.r.t. the robot in documentation
@@ -19,6 +18,8 @@ public class RobotForce : MonoBehaviour
     // unity_robot_transform:realrobot, [right:front,forward:left,up:up,r,p,y]
     public float[] other_control = {0f,0f,0f,0f,0f,0f}; // location, rotation (position(m, r), velocity(m/s, r/s), force_strength[-1,1])
 
+    [HideInInspector] public int WDogStatus;
+    [HideInInspector] public int MotorMode;
     float timer = 0;
     float random_thrust = 0;
     public enum controlMode : int {

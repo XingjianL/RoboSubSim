@@ -71,16 +71,11 @@ public struct IMU{
 }
 public class RobotIMU : MonoBehaviour
 {
-    [Tooltip("typical range, ug/sqrt(Hz)")]
-    public float accelNoise = 150f;
-    [Tooltip("Drift, ug/sqrt(Hz)")]
-    public float accelNoiseDrift = 0f;
-    [Tooltip("window (s)")]
-    public float avgWindow = 0.01f;
-    [Tooltip("typical range, deg/s")]
-    public float gyroNoise = 0.1f;
-    [Tooltip("drift, deg/s")]
-    public float gyroNoiseDrift = 1.5f;
+    [Tooltip("typical range, ug/sqrt(Hz)")] public float accelNoise = 150f;
+    [Tooltip("Drift, ug/sqrt(Hz)")] public float accelNoiseDrift = 0f;
+    [Tooltip("window (s)")] public float avgWindow = 0.01f;
+    [Tooltip("typical range, deg/s")] public float gyroNoise = 0.1f;
+    [Tooltip("drift, deg/s")] public float gyroNoiseDrift = 1.5f;
     public IMU imu;
     Rigidbody m_rigidbody;
     // Start is called before the first frame update

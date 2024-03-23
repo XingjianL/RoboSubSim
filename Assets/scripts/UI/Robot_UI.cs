@@ -25,6 +25,7 @@ public class Robot_UI : MonoBehaviour
     public TMPro.TMP_InputField ImageHeight;
     public TMPro.TMP_Dropdown cameraModeDropdown;
     
+    public bool toggleInfo;
     //public void setNewRobot(){
     //    if (Robot == null){
     //        Robot = GameObject.FindGameObjectWithTag("Robot");
@@ -58,6 +59,9 @@ public class Robot_UI : MonoBehaviour
             configRobotParams();
             configControlMode();
             configCamera();
+            toggleInfo = true;
+        } else {
+            toggleInfo = false;
         }
     }
     public void changeTCPMessage(){
@@ -150,11 +154,30 @@ public class Robot_UI : MonoBehaviour
         }
     }
 
+    public TMPro.TMP_Text RobotStateText;
+    void UpdateRobotStateMessage(){
+        string robot_state =    "--Robot States--\n";
+        if (toggleInfo) {
+            IMU imu = sceneManagement.getRobotIMU();
+            RobotForce forces = sceneManagement.getRobotForces();
+
+            robot_state +=  "IMU (xyzw): " + imu.robotRotation + "\n" +
+                            "Depth: " + imu.robotPosition.z + "\n" +
+                            "Motors: " + System.String.Join(" ",forces.thrust_strengths) + "\n" +
+                            "MotorMode: " + forces.MotorMode + " WDog: " + forces.WDogStatus + "\n";
+        }
+        if (sceneManagement.allCommandsReceived.Count > 0){
+            robot_state +=  "--Command Received--\n"+
+                            "Command: " + sceneManagement.allCommandsReceived[sceneManagement.allCommandsReceived.Count-1];
+        }
+        RobotStateText.text = robot_state;
+    }
     // Update is called once per frame
     void Update()
     {
         if (sceneManagement != null){
             changeTCPMessage();
         }
+        UpdateRobotStateMessage();
     }
 }
