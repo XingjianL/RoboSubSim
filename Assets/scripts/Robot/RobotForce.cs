@@ -68,7 +68,7 @@ public class RobotForce : MonoBehaviour
     }
     // t1-8 from [-1,1] please
     private void set_thrusts_strengths(){
-        Debug.Log("Inverts: " + System.String.Join(",",unity_inverts) + ", Mapping: " + System.String.Join(",",robot_unity_mapping));
+        //Debug.Log("Inverts: " + System.String.Join(",",unity_inverts) + ", Mapping: " + System.String.Join(",",robot_unity_mapping));
         add_thruster_force(0, thrust_strengths[robot_unity_mapping[0]-1] * strength * KGF_TO_N * unity_inverts[0]);
         add_thruster_force(1, thrust_strengths[robot_unity_mapping[1]-1] * strength * KGF_TO_N * unity_inverts[1]);
         add_thruster_force(2, thrust_strengths[robot_unity_mapping[2]-1] * strength * KGF_TO_N * unity_inverts[2]);

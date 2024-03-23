@@ -279,6 +279,9 @@ public class CommandPacket{
     /// </returns>
     public bool sendPacket(NetworkStream nwStream, int bytes_to_send){
         while (bytes_to_send > 0){
+            if (!nwStream.CanWrite || !nwStream.CanRead){
+                return true;
+            }
             bytes_to_send -= 1;
             //Debug.Log("count: " + body.Length + " i: " + body_counter);
             if (body_counter == 0) {
@@ -408,36 +411,38 @@ public class TCPServer : MonoBehaviour
             simCB_imu_currentTime += Time.deltaTime;
         }
         if (!serverStarted && runServer) {
-            startThread();
+            startRustThread();
             serverStarted = true;
         }
         if (serverStarted && !runServer) {
-            stopThread();
+            stopRustThread();
             serverStarted = false;
         }
         //Debug.Log("Received Count: " + receiveCommandsPool.Count + " Send Count: " + sendCommandsPool.Count);
         //print(runServer);
 
         if (simCB_Connect && !simCB_Connected) {
+            Debug.Log("SimCB connect");
             simCB_client = new TcpClient("127.0.0.1", simCB_Port);
-            simCB_client.ReceiveBufferSize = receive_buffer_size;
+            //simCB_client.ReceiveBufferSize = receive_buffer_size;
             simCB_Connected = true;
-            threadSimCB = new Thread(() => GetDataSimCB());
-            threadSimCB.Start();
+            startSimCBThread();
             Debug.Log("SimCB connected");
         }
         if (!simCB_Connect && simCB_Connected) {
             Debug.Log("SimCB disconnect");
             simCB_Connected = false;
-            simCB_client.Close();
-            threadSimCB.Join();
+            stopSimCBThread();
+            Debug.Log("SimCB disconnected");
         }
     }
     void OnDestroy(){
-        stopThread();
+        stopRustThread();
+        stopSimCBThread();
     }
     void OnApplicationQuit(){
-        stopThread();
+        stopRustThread();
+        stopSimCBThread();
     }
     void SimHijack(ushort simCB_id = 60000, byte hijack = 1){
         simCB_sendCommandsPool.Add(
@@ -576,27 +581,6 @@ public class TCPServer : MonoBehaviour
                                                 simCB_receiveCommandsPool[simCB_receiveCommandsPool.Count-1].body.Length
                                                 ));
                             break;
-                        //case (PROCESS_CODES.SIMCB_REPLY | PROCESS_CODES.SIM_DATA | PROCESS_CODES.SIM_WDGF):
-                            //if(sendCommandsPool.Count > 1){
-                            //    goto case (PROCESS_CODES.SIMCB_REPLY | PROCESS_CODES.SIM_DATA);
-                            //}
-                            //if(simCB_sendCommandsPool.Count < 1){
-                            //    Debug.Log("simCB robot IMU packet");
-                            //    SimData(sceneManagement.getRobotIMU(), simCB_ID);
-                            //    simCB_ID += 1;
-                            //    sendCommandsPool.Add(
-                            //    new CommandPacket(sceneManagement,
-                            //                    id: 0,
-                            //                    header: commandsHeader["WDGF"],
-                            //                    data: new byte[] { }
-                            //                    )
-                            //                );
-                            //}
-                            //if (simCB_imu_currentTime > SIMCB_IMU_INTERVAL){ 
-                            //    simCB_imu_currentTime = 0;
-                            //}
-                            //break;
-                            //goto case (PROCESS_CODES.SIMCB_REPLY | PROCESS_CODES.SIM_DATA);
                         case (PROCESS_CODES.SIMCB_REPLY | PROCESS_CODES.SIM_DATA):
                             if(simCB_sendCommandsPool.Count < 1){
                                 Debug.Log("simCB robot IMU packet");
@@ -752,18 +736,28 @@ public class TCPServer : MonoBehaviour
         }
     }
 
-    void startThread(){
+    void startRustThread(){
         threadRust = new Thread(() => GetData(port));
         threadRust.Start();
     }
-    void stopThread(){
+    void startSimCBThread(){
+        threadSimCB = new Thread(() => GetDataSimCB());
+        threadSimCB.Start();
+    }
+    void stopRustThread(){
         runServer = false;
         threadRust.Join();
+        receiveCommandsPool.Clear();
+        sendCommandsPool.Clear();
         threadRust = new Thread(() => GetData(port));
-
+    }
+    void stopSimCBThread(){
         simCB_Connected = false;
-        simCB_client.Close();
         threadSimCB.Join();
+        simCB_client.Close();
+        simCB_receiveCommandsPool.Clear();
+        simCB_sendCommandsPool.Clear();
+        threadSimCB = new Thread(() => GetDataSimCB());
     }
     
     // Position is the data being received in this example

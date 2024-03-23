@@ -46,8 +46,10 @@ public class SceneManagement : MonoBehaviour
     public List<string> allCommandsReceived = new List<string>();
     public IEnumerator ResetSceneCoroutine(){
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneLists[sceneSelect]);
-        while(!asyncLoad.isDone){
-            yield return null;
+        asyncLoad.allowSceneActivation = true;
+
+        while (!asyncLoad.isDone){
+            yield return new WaitForSeconds(0.1f);
         }
 
         ui_script.refresh();
