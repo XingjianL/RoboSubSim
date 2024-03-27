@@ -102,7 +102,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.75
   xMultiplier:
     m_OverrideState: 1
     m_Value: 1
@@ -215,16 +215,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6b00fcf518bb94a90b408492e07b44, type: 3}
   m_Name: FilmGrain
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   type:
     m_OverrideState: 1
     m_Value: 7
   intensity:
     m_OverrideState: 1
-    m_Value: 0.195
+    m_Value: 0.156
   response:
     m_OverrideState: 1
-    m_Value: 0.396
+    m_Value: 0.4
   texture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15cc4c5fcb677014ebdc0d8be227b40c, type: 3}
   m_Name: ScreenSpaceLensFlare
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   intensity:
     m_OverrideState: 1
     m_Value: 2

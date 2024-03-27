@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 /// <summary>
 /// This script handles all objects (with matching tagNames) in the scene so no calls to individual script should be needed
 /// Therefore it grabs all objects in the scene and has the ability to copy/remove objects (that exists) in the scene
@@ -26,6 +27,7 @@ public class SceneManagement : MonoBehaviour
 {
     public Robot_UI ui_script;
     const int ROBOT = 0;
+    const int POOL = 1;
     string[] tagNames = {"Robot", "Pool", "2023Objective", "Environment"};
     List<GameObject[]> gameObjects = new List<GameObject[]>();
     List<TCPRobot> allRobots = new List<TCPRobot>();
@@ -33,7 +35,6 @@ public class SceneManagement : MonoBehaviour
     int objectSelect;
     public TCPServer tcpServer;
     public TCPRobot tcpRobot;
-    public bool tcpObjectChanged;
     public int tcpTagSelect;
     public int tcpObjectSelect;
     public string[] sceneLists = new string[] { "Scenes/LobbyScene",
@@ -43,6 +44,16 @@ public class SceneManagement : MonoBehaviour
     public int sceneSelect = 0;
     public bool simCBRefresh = false;
     public bool simCBToggle = false;
+    public bool robotCFGRefresh = false;
+    public float[] robotCFG = {-1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f};
+    public bool camCFGRefresh = false;
+    public int[] camCFG = {640, 480, 0};
+    public byte camCFG_Effects = 0;
+    public bool rgbScreenResizeToggle;
+    public bool ShowGUIToggle;
+    public byte sceneToggles;
+    public bool sceneTogglesRefresh;
+    public short scatterColorBias;
     public List<string> allCommandsReceived = new List<string>();
     public IEnumerator ResetSceneCoroutine(){
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneLists[sceneSelect]);
@@ -66,19 +77,32 @@ public class SceneManagement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tcpObjectChanged){
-            GameObject gameObject = selectObject(tagNames[tcpTagSelect], tcpObjectSelect);
-            if (tcpTagSelect == ROBOT){
-                tcpRobot.setNewRobot(gameObject);
-            }
-            tcpObjectChanged = false;
-        }
         if (sceneRefresh) {
             ResetScene();
         }
         if (simCBRefresh){
             simCBRefresh = false;
             setupSimCBConnect(simCBToggle);
+        }
+        if (robotCFGRefresh){
+            robotCFGRefresh = false;
+            configRobotParams(
+                mass:   robotCFG[0],
+                volume: robotCFG[1],
+                ldrag:  robotCFG[2],
+                adrag:  robotCFG[3],
+                f_KGF:  robotCFG[4],
+                r_KGF:  robotCFG[5]
+                );
+        }
+        if (camCFGRefresh){
+            camCFGRefresh = false;
+            configRobotCamera(height: camCFG[0], width: camCFG[1], mode: camCFG[2]);
+            setPoolPostProcesses(camCFG_Effects);
+        }
+        if (sceneTogglesRefresh){
+            sceneTogglesRefresh = false;
+            configScene();
         }
     }
     /// <summary>
@@ -120,22 +144,43 @@ public class SceneManagement : MonoBehaviour
 
         ui_script.controlModeDropdown.value = (int)mode;
     }
-    public void configRobotParams(float mass, float volume, int robotID = 0, bool tcp = false){
+    public void configRobotParams(float mass = -1, 
+                                    float volume = -1, 
+                                    float ldrag = -1,
+                                    float adrag = -1,
+                                    float f_KGF = -1, 
+                                    float r_KGF =-1, 
+                                    int robotID = 0, 
+                                    bool tcp = false){
             //GameObject robot = selectObject(ROBOT, robotID);
-        allRobots[robotID].controlScript.m_rigidBody.mass = mass;
-        allRobots[robotID].buoyScript.volumeDisplaced = volume;
-    
-        ui_script.Mass.text = mass.ToString();
-        ui_script.Volume.text = volume.ToString();
+        if (mass > 0) {
+            allRobots[robotID].controlScript.m_rigidBody.mass = mass;
+            ui_script.Mass.text = mass.ToString();
+        }
+        if (volume > 0) {
+            allRobots[robotID].buoyScript.volumeDisplaced = volume;
+            ui_script.Volume.text = volume.ToString();
+        }
+        allRobots[robotID].controlScript.set_motor_cfg(f_KGF, r_KGF);
+        if (ldrag > 0){
+            allRobots[robotID].controlScript.m_rigidBody.drag = ldrag;
+        }
+        if (adrag > 0){
+            allRobots[robotID].controlScript.m_rigidBody.angularDrag = adrag;
+        }
     }
     public void configRobotCamera(int height = -1, int width = -1, int mode = -1, int robotID = 0){
         GameObject robot = selectObject(ROBOT, robotID);
         RobotCamera script = allRobots[robotID].cameraScript;
+        if (rgbScreenResizeToggle){
+            Screen.SetResolution(width, height, false);
+        }
         if (height > 0 && width > 0){
             if (script.imgHeight != height || script.imgWidth != width){
                 script.imgHeight = height;
                 script.imgWidth = width;
-
+                ui_script.ImageHeight.text = script.imgHeight.ToString();
+                ui_script.ImageWidth.text = script.imgWidth.ToString();
                 // check current tcp server (kill and re-enable on new robot)
                 //bool hasServer = tcpServer.runServer;
                 //if (hasServer) {setupTCPServer(tcpServer.IPAddr, tcpServer.port, false, tcpServer.msPerTransmit);}
@@ -145,16 +190,23 @@ public class SceneManagement : MonoBehaviour
                 Destroy(robot);
                 replaceObjectInArray(newrobot, ROBOT, robotID);
                 script = newrobot.GetComponent<RobotCamera>();
-                //if (hasServer) {setupTCPServer(tcpServer.IPAddr, tcpServer.port, true, tcpServer.msPerTransmit);}
-                // copy settings to new robot
+                
+                
             }
+            //
+            
+            
+        }
+        
+        if (ShowGUIToggle){
+            script.ShowGUI = true;
         }
         if (mode > 0){
             script.configCommand(mode);
+            ui_script.cameraModeDropdown.value = (int)script.currentCommand;
         }
-        ui_script.ImageHeight.text = script.imgHeight.ToString();
-        ui_script.ImageWidth.text = script.imgWidth.ToString();
-        ui_script.cameraModeDropdown.value = (int)script.currentCommand;
+        
+        
     }
     public int getCameraMode(int robotID = 0){
         GameObject robot = selectObject(ROBOT, robotID);
@@ -213,7 +265,59 @@ public class SceneManagement : MonoBehaviour
         RobotForce script = allRobots[robotID].controlScript;
         return script;
     }
-    
+    ///
+    /// 
+    /// 
+    public void configScene(){
+        if ((sceneToggles & 0b0000_0001) != 0){
+            poolColorRandom();
+        }
+        if ((sceneToggles & 0b0000_0010) != 0){
+            togglePhysics(true);
+        } else {togglePhysics(false);}
+        if ((sceneToggles & 0b0000_0100) != 0){
+            // random pool textures
+        }
+        if ((sceneToggles & 0b0000_1000) != 0){
+            // random caustics
+        }
+    }
+    public void setPoolPostProcesses(byte toggles){
+        GameObject pool = selectObject(POOL, 0);
+        Volume poolPostProcess = pool.GetComponentInChildren<Volume>();
+        Debug.Log(poolPostProcess);
+        if ((toggles & 0b0000_0001) > 0){
+            if (poolPostProcess.profile.TryGet<LensDistortion>(out var ld)){ld.active = true;}
+        } else {
+            if (poolPostProcess.profile.TryGet<LensDistortion>(out var ld)){ld.active = false;}
+        }
+        if ((toggles & 0b0000_0010) > 0){
+            if (poolPostProcess.profile.TryGet<Fog>(out var f)){f.active = true;}
+        } else {
+            if (poolPostProcess.profile.TryGet<Fog>(out var f)){f.active = false;}
+        }
+        if ((toggles & 0b0000_0100) > 0){
+            if (poolPostProcess.profile.TryGet<ChromaticAberration>(out var ca)){ca.active = true;}
+        } else {
+            if (poolPostProcess.profile.TryGet<ChromaticAberration>(out var ca)){ca.active = false;}
+        }
+        if ((toggles & 0b0000_1000) > 0){
+            if (poolPostProcess.profile.TryGet<FilmGrain>(out var fg)){fg.active = true;}
+        } else {
+            if (poolPostProcess.profile.TryGet<FilmGrain>(out var fg)){fg.active = false;}
+        }
+        if ((toggles & 0b0001_0000) > 0){
+            if (poolPostProcess.profile.TryGet<Bloom>(out var b)){b.active = true;}
+        } else {
+            if (poolPostProcess.profile.TryGet<Bloom>(out var b)){b.active = false;}
+        }
+        if ((toggles & 0b0010_0000) > 0){
+            if (poolPostProcess.profile.TryGet<ScreenSpaceLensFlare>(out var lf)){lf.active = true;}
+        } else {
+            if (poolPostProcess.profile.TryGet<ScreenSpaceLensFlare>(out var lf)){lf.active = false;}
+        }
+    }
+
     /// <summary>
     /// Load and Debug Scene
     /// </summary>
@@ -269,6 +373,9 @@ public class SceneManagement : MonoBehaviour
         return selectObject(tagID, objectID);
     }
     void replaceObjectInArray(GameObject newObject, int tagID, int objectID){
+        if(tagID == ROBOT){
+            allRobots[objectID].setNewRobot(newObject);
+        }
         gameObjects[tagID][objectID] = newObject;
     }
     void replaceObjectInArray(GameObject newObject, string tag, int objectID){
@@ -279,6 +386,7 @@ public class SceneManagement : MonoBehaviour
         var waterBodies = GameObject.FindGameObjectsWithTag("WaterColor");
         foreach(GameObject waterBody in waterBodies){
             waterBody.GetComponent<WaterRandomization>().RandomizeWater();
+            waterBody.GetComponent<WaterRandomization>().scatterColorBias = scatterColorBias;
         }
     }
     public void setPoolWaterColor(int blue, int green, float brightness){
@@ -291,7 +399,7 @@ public class SceneManagement : MonoBehaviour
     public void togglePhysics(bool On){
         Rigidbody[] allRigidBodies = GameObject.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
         foreach(Rigidbody rigidbody in allRigidBodies){
-            rigidbody.isKinematic = On;
+            rigidbody.isKinematic = !On;
         }
     }
     public void setDisplayCamera(bool ShowGUI){

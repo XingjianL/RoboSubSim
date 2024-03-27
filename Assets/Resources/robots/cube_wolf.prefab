@@ -293,6 +293,8 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  WDogStatus: 0
+  MotorMode: 0
   controlMethod: 1
 --- !u!114 &7325955720987588687
 MonoBehaviour:
@@ -7125,7 +7127,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 1
@@ -7329,7 +7331,7 @@ MonoBehaviour:
   framesBetweenCaptures: 0
   showVisualizations: 0
   alphaThreshold: 0.1
-  overrideLayerMask: 0
+  overrideLayerMask: 1
   useAccumulation: 0
   references:
     version: 2
@@ -7343,7 +7345,7 @@ MonoBehaviour:
       type: {class: BoundingBox2DLabeler, ns: UnityEngine.Perception.GroundTruth.Labelers,
         asm: Unity.Perception.Runtime}
       data:
-        enabled: 0
+        enabled: 1
         annotationId: bounding box
         idLabelConfig: {fileID: 11400000, guid: 321280e15368ae94bb46af78c96aa314,
           type: 2}

@@ -234,7 +234,21 @@ public class CommandPacket{
                     case "CAMCFGU":
                         int cheight = System.BitConverter.ToInt32(body, 9);
                         int cwidth = System.BitConverter.ToInt32(body, 13);
-                        sceneManagement.configRobotCamera(height: cheight, width: cwidth, mode : body[17]);
+                        sceneManagement.camCFG[0] = cheight;
+                        sceneManagement.camCFG[1] = cwidth;
+                        sceneManagement.camCFG[2] = body[17];
+                        sceneManagement.camCFG_Effects = body[18];
+                        if ((body[18] & 0b1000_0000) != 0){
+                            sceneManagement.rgbScreenResizeToggle = true;
+                        } else {
+                            sceneManagement.rgbScreenResizeToggle = false;
+                        }
+                        if ((body[18] & 0b0100_0000) != 0){
+                            sceneManagement.ShowGUIToggle = true;
+                        } else {
+                            sceneManagement.ShowGUIToggle = false;
+                        }
+                        sceneManagement.camCFGRefresh = true;
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
                     case "SETENVU":
@@ -246,6 +260,25 @@ public class CommandPacket{
                     case "ROBOTSELU":
                     	process_code = PROCESS_CODES.UNITY_REPLY;
                         goto default;
+                    case "ROBCFGU":
+                        float[] rob_cfg = ParseFloats(body, 6, 9);
+                        Debug.Log("Received CFG: " + System.String.Join(',', rob_cfg));
+                        sceneManagement.robotCFG[0] = rob_cfg[0];
+                        sceneManagement.robotCFG[1] = rob_cfg[1]; 
+                        sceneManagement.robotCFG[2] = rob_cfg[2]; 
+                        sceneManagement.robotCFG[3] = rob_cfg[3]; 
+                        sceneManagement.robotCFG[4] = rob_cfg[4]; 
+                        sceneManagement.robotCFG[5] = rob_cfg[5];
+                        sceneManagement.robotCFGRefresh = true;
+                        process_code = PROCESS_CODES.UNITY_REPLY;
+                        break;
+                    case "SCECFGU":
+                        sceneManagement.sceneToggles = body[9];
+                        sceneManagement.scatterColorBias = System.BitConverter.ToInt16(body, 10);
+                        Debug.Log("bias: " + sceneManagement.scatterColorBias);
+                        sceneManagement.sceneTogglesRefresh = true;
+                        process_code = PROCESS_CODES.UNITY_REPLY;
+                        break;
                     case "HEARTBEAT":
                         process_code = PROCESS_CODES.NO_REPLY;
                         break;
@@ -347,7 +380,7 @@ public class TCPServer : MonoBehaviour
             // other commands
             "SASSISTTN",
             // unity commands
-            "CAPTUREU", "SETENVU", "CAMCFGU", "ROBOTSELU", "ROBOTCFGU", "RANDENVU", "SIMCBTOGU",
+            "CAPTUREU", "SETENVU", "CAMCFGU", "ROBOTSELU", "RANDENVU", "SIMCBTOGU", "ROBCFGU","SCECFGU",
             // acknowledge
             "ACK",
             // simCB

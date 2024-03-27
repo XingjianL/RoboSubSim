@@ -86,7 +86,7 @@ public class Robot_UI : MonoBehaviour
         //control_script.controlMethod = (RobotForce.controlMode)controlModeDropdown.value;
     }
     public void configRobotParams(){
-        sceneManagement.configRobotParams(float.Parse(Mass.text), float.Parse(Volume.text));
+        sceneManagement.configRobotParams(mass : float.Parse(Mass.text), volume : float.Parse(Volume.text));
     }
     public void captureImage(){
         sceneManagement.captureImage(cameraModeDropdown.value);
