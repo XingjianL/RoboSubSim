@@ -279,6 +279,21 @@ public class CommandPacket{
                         sceneManagement.sceneTogglesRefresh = true;
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
+                    case "ROBINIU":
+                        float[] rob_init_pose = ParseFloats(body, 6, 9);
+                        Debug.Log("ini: " + System.String.Join(", ", rob_init_pose));
+                        sceneManagement.setRobotPos(rob_init_pose[0], rob_init_pose[1], rob_init_pose[2]);
+                        sceneManagement.setRobotRot(rob_init_pose[3], rob_init_pose[4], rob_init_pose[5]);
+                        sceneManagement.refreshRobotPos = true;
+                        process_code = PROCESS_CODES.UNITY_REPLY;
+                        break;
+                    case "ROBRINU":
+                        float[] rob_init_pose_bounds = ParseFloats(body, 6, 9);
+                        sceneManagement.setRobotRandPose(rob_init_pose_bounds[0],rob_init_pose_bounds[1],rob_init_pose_bounds[2],
+                                                        rob_init_pose_bounds[3],rob_init_pose_bounds[4],rob_init_pose_bounds[5]);
+                        sceneManagement.refreshRobotPos = true;
+                        process_code = PROCESS_CODES.UNITY_REPLY;
+                        break;
                     case "HEARTBEAT":
                         process_code = PROCESS_CODES.NO_REPLY;
                         break;
@@ -380,7 +395,8 @@ public class TCPServer : MonoBehaviour
             // other commands
             "SASSISTTN",
             // unity commands
-            "CAPTUREU", "SETENVU", "CAMCFGU", "ROBOTSELU", "RANDENVU", "SIMCBTOGU", "ROBCFGU","SCECFGU",
+            "CAPTUREU", "SETENVU", "CAMCFGU", "ROBOTSELU", "RANDENVU", "SIMCBTOGU", "ROBCFGU", "SCECFGU",
+            "ROBINIU", "ROBRINU",
             // acknowledge
             "ACK",
             // simCB

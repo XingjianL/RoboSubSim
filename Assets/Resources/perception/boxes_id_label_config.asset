@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LabelEntries:
   - label: gate
-    id: 1
+    id: 0
     hierarchyRelation: 0
   - label: buoy1
-    id: 2
+    id: 1
     hierarchyRelation: 0
   - label: buoy2
-    id: 3
+    id: 2
     hierarchyRelation: 0
   - label: buoy3
-    id: 4
+    id: 3
     hierarchyRelation: 0
   - label: buoy4
-    id: 5
+    id: 4
     hierarchyRelation: 0
   autoAssignIds: 1
-  startingLabelId: 1
+  startingLabelId: 0

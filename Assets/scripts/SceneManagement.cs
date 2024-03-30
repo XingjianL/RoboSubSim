@@ -13,12 +13,21 @@ public class TCPRobot{
     public RobotForce controlScript;
     public RobotIMU imuScript;
     public BuoyancyForces buoyScript;
+    public Vector3 init_location = new Vector3(0,0,0); // real robot frame
+    public Quaternion init_rotation = new Quaternion(0,0,0,1); // real robot frame
     public void setNewRobot(GameObject robot){
         tcpObject = robot;
         cameraScript = robot.GetComponent<RobotCamera>();
         controlScript = robot.GetComponent<RobotForce>();
         imuScript = robot.GetComponent<RobotIMU>();
         buoyScript = robot.GetComponent<BuoyancyForces>();
+    }
+        /// coords in real robot frame
+    public void setRobotPos(){
+        tcpObject.transform.position = new Vector3(init_location.y,init_location.z,-init_location.x);
+    }
+    public void setRobotRot(){
+        tcpObject.transform.rotation = init_rotation;
     }
 }
 
@@ -53,6 +62,7 @@ public class SceneManagement : MonoBehaviour
     public bool ShowGUIToggle;
     public byte sceneToggles;
     public bool sceneTogglesRefresh;
+    public bool refreshRobotPos;
     public short scatterColorBias;
     public List<string> allCommandsReceived = new List<string>();
     public IEnumerator ResetSceneCoroutine(){
@@ -103,6 +113,14 @@ public class SceneManagement : MonoBehaviour
         if (sceneTogglesRefresh){
             sceneTogglesRefresh = false;
             configScene();
+        }
+        if (refreshRobotPos){
+            refreshRobotPos = false;
+            foreach (var _rob in allRobots)
+            {
+                _rob.setRobotPos();
+                _rob.setRobotRot();
+            }
         }
     }
     /// <summary>
@@ -264,6 +282,20 @@ public class SceneManagement : MonoBehaviour
     public RobotForce getRobotForces(int robotID = 0){
         RobotForce script = allRobots[robotID].controlScript;
         return script;
+    }
+    public void setRobotPos(float x, float y, float z, int robotID = 0){
+        TCPRobot robot = allRobots[robotID];
+        robot.init_location = new Vector3(x, y, z);
+    }
+    public void setRobotRot(float x, float y, float z, int robotID = 0){
+        TCPRobot robot = allRobots[robotID];
+        robot.init_rotation = Quaternion.Euler(x, y, z);
+    }
+    public void setRobotRandPose(float xp, float yp, float zp, float xr, float yr, float zr, int robotID = 0) {
+        TCPRobot robot = allRobots[robotID];
+        var rand = new System.Random();
+        robot.init_location = new Vector3(2*xp*((float)rand.NextDouble()-0.5f), 2*yp*((float)rand.NextDouble()-0.5f), System.Math.Clamp(2*zp*((float)rand.NextDouble()-0.5f), -10.0f, -0.5f));
+        robot.init_rotation = Quaternion.Euler(2*xr*((float)rand.NextDouble()-0.5f), 2*yr*((float)rand.NextDouble()-0.5f), 2*zr*((float)rand.NextDouble()-0.5f));
     }
     ///
     /// 
