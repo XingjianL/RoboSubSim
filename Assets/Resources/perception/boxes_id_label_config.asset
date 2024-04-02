@@ -28,5 +28,17 @@ MonoBehaviour:
   - label: buoy4
     id: 4
     hierarchyRelation: 0
+  - label: gatepole
+    id: 5
+    hierarchyRelation: 0
+  - label: gateblue
+    id: 6
+    hierarchyRelation: 0
+  - label: gatered
+    id: 7
+    hierarchyRelation: 0
+  - label: gatemiddle
+    id: 8
+    hierarchyRelation: 0
   autoAssignIds: 1
   startingLabelId: 0
