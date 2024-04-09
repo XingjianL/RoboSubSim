@@ -35,9 +35,11 @@ public class TCPRobot{
 public class SceneManagement : MonoBehaviour
 {
     public Robot_UI ui_script;
+    public TextureRandomization textureRandomizationScript;
     const int ROBOT = 0;
     const int POOL = 1;
-    string[] tagNames = {"Robot", "Pool", "2023Objective", "Environment"};
+    const int POOLMESH = 4;
+    string[] tagNames = {"Robot", "Pool", "2023Objective", "Environment", "PoolMesh"};
     List<GameObject[]> gameObjects = new List<GameObject[]>();
     List<TCPRobot> allRobots = new List<TCPRobot>();
     int tagSelect;
@@ -85,6 +87,7 @@ public class SceneManagement : MonoBehaviour
         setupTCPServer();
     }
     // Update is called once per frame
+    // Mark: Update
     void Update()
     {
         if (sceneRefresh) {
@@ -309,6 +312,7 @@ public class SceneManagement : MonoBehaviour
         } else {togglePhysics(false);}
         if ((sceneToggles & 0b0000_0100) != 0){
             // random pool textures
+            RandomizeMaterial(selectObject(POOLMESH, 0), 1);
         }
         if ((sceneToggles & 0b0000_1000) != 0){
             // random caustics
@@ -427,7 +431,9 @@ public class SceneManagement : MonoBehaviour
             waterBody.GetComponent<WaterRandomization>().SetWaterColor(blue, green, brightness);
         }
     }
-    
+    public void RandomizeMaterial(GameObject obj, int typeMat){
+        textureRandomizationScript.RandomizeMaterial(obj, typeMat);
+    }
     public void togglePhysics(bool On){
         Rigidbody[] allRigidBodies = GameObject.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
         foreach(Rigidbody rigidbody in allRigidBodies){

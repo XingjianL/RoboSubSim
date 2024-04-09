@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2629267781029906934}
   - component: {fileID: 1467452071275341564}
   - component: {fileID: 3607302369067931935}
+  - component: {fileID: 2609277008160692682}
   m_Layer: 0
   m_Name: SceneManagement
   m_TagString: SceneManagement
@@ -47,8 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ui_script: {fileID: 0}
+  textureRandomizationScript: {fileID: 2609277008160692682}
   tcpServer: {fileID: 0}
-  tcpObjectChanged: 0
   tcpTagSelect: 0
   tcpObjectSelect: 0
   sceneLists:
@@ -57,6 +58,26 @@ MonoBehaviour:
   - Scenes/OutdoorsScene
   sceneRefresh: 0
   sceneSelect: 0
+  simCBRefresh: 0
+  simCBToggle: 0
+  robotCFGRefresh: 0
+  robotCFG:
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  camCFGRefresh: 0
+  camCFG: 80020000e001000000000000
+  camCFG_Effects: 0
+  rgbScreenResizeToggle: 0
+  ShowGUIToggle: 0
+  sceneToggles: 0
+  sceneTogglesRefresh: 0
+  refreshRobotPos: 0
+  scatterColorBias: 0
+  allCommandsReceived: []
 --- !u!114 &1467452071275341564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,11 +90,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d169406667a7449a5d6940174c9cca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  receive_buffer_size: 8
   IPAddr: 127.0.0.1
   port: -1
   msPerTransmit: 100
   ui_message: Closed
   runServer: 0
+  simCB_Connect: 0
+  simCB_Port: 5014
+  simCB_Connected: 0
+  simCB_ID: 60000
+  simCB_currentTime: 0
+  simCB_imu_currentTime: 0
 --- !u!114 &3607302369067931935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,3 +114,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9b69705b98845ca89554a7c92bceaec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2609277008160692682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626829705743676056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6248cbd01a9524e4da519a40d42ecc3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialList:
+  - materials:
+    - {fileID: 2100000, guid: 0f28a043fe03d794483e4cda41709163, type: 2}
+  - materials:
+    - {fileID: 2100000, guid: aefa62ee04789e745b9c2b7d23a21e67, type: 2}
+    - {fileID: 2100000, guid: 621a6429119a1554e8384aa7b111e775, type: 2}
+    - {fileID: 2100000, guid: 065a3f32f15eafa4c8ade8c33a885e9d, type: 2}
+    - {fileID: 2100000, guid: 5316922ceb4b0e049a0264d9d31c6a43, type: 2}
+    - {fileID: 2100000, guid: 0fe09d884d05833478278bfad09bb050, type: 2}
+    - {fileID: 2100000, guid: 983e0992e19cd6b488952f5565ef1372, type: 2}
+    - {fileID: 2100000, guid: 3656d0aa017075d48939785eefd39dc1, type: 2}
+    - {fileID: 2100000, guid: 5932f2760d420ff4da6d82bd54fe830d, type: 2}
+    - {fileID: 2100000, guid: 82f5feab8d85b3d4bb877287d1f8fb27, type: 2}
