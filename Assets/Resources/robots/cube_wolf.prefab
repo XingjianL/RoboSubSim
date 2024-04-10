@@ -271,12 +271,13 @@ MonoBehaviour:
   - {fileID: 1182077728615828581}
   - {fileID: 6518905090109130357}
   - {fileID: 5563994834262912885}
-  strength: 2.36
+  forward_KGF: 2.36
+  reverse_KGF: 1.85
   forceVisual: 1
   forceVisualMaterial: {fileID: 2100000, guid: 100d2cc9cd44586e0b9f28c7f37139ba, type: 2}
   m_rigidBody: {fileID: 0}
   robot_unity_mapping: 0300000004000000010000000200000007000000080000000500000006000000
-  unity_inverts: 01000000010000000100000001000000ffffffff0100000001000000ffffffff
+  unity_inverts: ffffffffffffffff0100000001000000ffffffff0100000001000000ffffffff
   thrust_strengths:
   - 0
   - 0

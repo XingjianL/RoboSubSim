@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1652.4304, g: 1482.4474, b: 1630.0413, a: 1}
+  m_IndirectSpecularColor: {r: 1612.2122, g: 1405.9474, b: 1392.5255, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -181,22 +181,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6760378288247177525, guid: b70c9d58957517d41bf4a01521bd7e9f,
-        type: 3}
-      propertyPath: m_TagString
-      value: PoolMesh
-      objectReference: {fileID: 0}
-    - target: {fileID: 7157202698637240614, guid: b70c9d58957517d41bf4a01521bd7e9f,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 8604045607132181640, guid: 69962ac68cd7b164aafbf5f29bdbf118,
-        type: 3}
-    - target: {fileID: 7878560772687654274, guid: b70c9d58957517d41bf4a01521bd7e9f,
-        type: 3}
-      propertyPath: weight
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1278,16 +1262,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771944606451129677, guid: b74ea355523470b4c968ffdd0a45ed84,
-        type: 3}
-      propertyPath: 'unity_inverts.Array.data[0]'
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5771944606451129677, guid: b74ea355523470b4c968ffdd0a45ed84,
-        type: 3}
-      propertyPath: 'unity_inverts.Array.data[1]'
-      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -188,9 +188,9 @@ MonoBehaviour:
   smoothnessFadeDistance: 500
   refractionColor: {r: 0.45641106, g: 0.5149178, b: 0.5143361, a: 1}
   maxRefractionDistance: 3.5
-  absorptionDistance: 5
-  scatteringColor: {r: 0.04518618, g: 0.08021983, b: 0.18782076, a: 1}
-  ambientScattering: 0
+  absorptionDistance: 7
+  scatteringColor: {r: 0.009497926, g: 0.30121204, b: 0.24896035, a: 1}
+  ambientScattering: 1
   heightScattering: 1
   displacementScattering: 0.97
   directLightTipScattering: 0.2
@@ -201,8 +201,8 @@ MonoBehaviour:
   causticsPlaneBlendDistance: 2
   causticsResolution: 1024
   causticsBand: 2
-  virtualPlaneDistance: 10
-  causticsTilingFactor: 3
+  virtualPlaneDistance: 5
+  causticsTilingFactor: 5
   causticsDirectionalShadow: 0
   causticsDirectionalShadowDimmer: 0.25
   renderingLayerMask: 257
@@ -221,7 +221,7 @@ MonoBehaviour:
   underWaterAmbientProbeContribution: 1
   underWaterScatteringColorMode: 0
   underWaterScatteringColor: {r: 0.19120172, g: 0.30946895, b: 0.2086369, a: 1}
-  underWaterRefraction: 0
+  underWaterRefraction: 1
   largeCurrentSpeedValue: 0
   largeCurrentMap: {fileID: 0}
   largeCurrentRegionExtent: {x: 100, y: 100}
@@ -329,6 +329,7 @@ MonoBehaviour:
   waterScript: {fileID: 866070171036112511}
   centerVisibility: 5
   multiplierVisibility: 2.5
+  scatterColorBias: 0
 --- !u!1 &8606220386771760332
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +427,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 69962ac68cd7b164aafbf5f29bdbf118,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -15.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 69962ac68cd7b164aafbf5f29bdbf118,
         type: 3}
@@ -436,7 +437,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 69962ac68cd7b164aafbf5f29bdbf118,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 19.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 69962ac68cd7b164aafbf5f29bdbf118,
         type: 3}
@@ -451,12 +452,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 69962ac68cd7b164aafbf5f29bdbf118,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 69962ac68cd7b164aafbf5f29bdbf118,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 69962ac68cd7b164aafbf5f29bdbf118,
         type: 3}
@@ -482,6 +483,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3372522033569347474, guid: 69962ac68cd7b164aafbf5f29bdbf118,
+        type: 3}
+      propertyPath: m_TagString
+      value: PoolMesh
       objectReference: {fileID: 0}
     - target: {fileID: -1256713590742842469, guid: 69962ac68cd7b164aafbf5f29bdbf118,
         type: 3}

@@ -35,9 +35,21 @@ public class WaterRandomization : MonoBehaviour
         //}
         //print(count);
     }
+    public void toggleVisibilityProfile(bool Clear){
+        if (Clear){
+            centerVisibility = 7f;
+        } else {
+            centerVisibility = 5f;
+        }
+    }
     public void RandomizeWater(){
-        RandomScatteringColor();
+        //RandomScatteringColor();
+        RandomScatteringColorHSV();
         RandomVisibility();
+    }
+    public void RandomCaustic(){
+        waterScript.virtualPlaneDistance = Random.Range(1.0f, 10.0f);
+        waterScript.causticsTilingFactor = Random.Range(1.0f, 10.0f);
     }
     void RandomScatteringColor(){
         int sum_color = Random.Range(BG_SUM_MIN, BG_SUM_MAX) + scatterColorBias;
@@ -56,5 +68,17 @@ public class WaterRandomization : MonoBehaviour
         waterScript.scatteringColor.b = (blue/255.0f) % 1.0f;
         waterScript.scatteringColor.g = (green/255.0f) % 1.0f;
         waterScript.scatteringColor *= brightness;
+    }
+    void RandomScatteringColorHSV(){
+        int Hue = Random.Range(140, 250) + scatterColorBias;
+        int Saturation = Random.Range(50, 100);
+        int Value = Random.Range(50, 100);
+        waterScript.scatteringColor = Color.HSVToRGB(
+            (Hue/360.0f) % 1.0f,
+            (Saturation/100.0f) % 1.0f,
+            (Value/100.0f) % 1.0f);
+    }
+    public void setRefraction(bool on){
+        waterScript.underWaterRefraction = on;
     }
 }

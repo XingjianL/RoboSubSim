@@ -307,16 +307,18 @@ public class SceneManagement : MonoBehaviour
         if ((sceneToggles & 0b0000_0001) != 0){
             poolColorRandom();
         }
-        if ((sceneToggles & 0b0000_0010) != 0){
-            togglePhysics(true);
-        } else {togglePhysics(false);}
+        // toggle physics
+        togglePhysics((sceneToggles & 0b0000_0010) != 0);
         if ((sceneToggles & 0b0000_0100) != 0){
             // random pool textures
             RandomizeMaterial(selectObject(POOLMESH, 0), 1);
         }
         if ((sceneToggles & 0b0000_1000) != 0){
             // random caustics
+            poolCausticsRandom();
         }
+        // toggle water visibility
+        poolConditionToggle((sceneToggles & 0b0001_0000) != 0);
     }
     public void setPoolPostProcesses(byte toggles){
         GameObject pool = selectObject(POOL, 0);
@@ -348,9 +350,9 @@ public class SceneManagement : MonoBehaviour
             if (poolPostProcess.profile.TryGet<Bloom>(out var b)){b.active = false;}
         }
         if ((toggles & 0b0010_0000) > 0){
-            if (poolPostProcess.profile.TryGet<ScreenSpaceLensFlare>(out var lf)){lf.active = true;}
+            if (poolPostProcess.profile.TryGet<ScreenSpaceLensFlare>(out var lf)){lf.active = true; poolCameraRefraction(true);}
         } else {
-            if (poolPostProcess.profile.TryGet<ScreenSpaceLensFlare>(out var lf)){lf.active = false;}
+            if (poolPostProcess.profile.TryGet<ScreenSpaceLensFlare>(out var lf)){lf.active = false; poolCameraRefraction(false);}
         }
     }
 
@@ -425,10 +427,28 @@ public class SceneManagement : MonoBehaviour
             waterBody.GetComponent<WaterRandomization>().scatterColorBias = scatterColorBias;
         }
     }
+    public void poolCausticsRandom(){
+        var waterBodies = GameObject.FindGameObjectsWithTag("WaterColor");
+        foreach(GameObject waterBody in waterBodies){
+            waterBody.GetComponent<WaterRandomization>().RandomCaustic();
+        }
+    }
     public void setPoolWaterColor(int blue, int green, float brightness){
         var waterBodies = GameObject.FindGameObjectsWithTag("WaterColor");
         foreach(GameObject waterBody in waterBodies){
             waterBody.GetComponent<WaterRandomization>().SetWaterColor(blue, green, brightness);
+        }
+    }
+    public void poolCameraRefraction(bool on){
+        var waterBodies = GameObject.FindGameObjectsWithTag("WaterColor");
+        foreach(GameObject waterBody in waterBodies){
+            waterBody.GetComponent<WaterRandomization>().setRefraction(on);
+        }
+    }
+    public void poolConditionToggle(bool far){
+        var waterBodies = GameObject.FindGameObjectsWithTag("WaterColor");
+        foreach(GameObject waterBody in waterBodies){
+            waterBody.GetComponent<WaterRandomization>().toggleVisibilityProfile(far);
         }
     }
     public void RandomizeMaterial(GameObject obj, int typeMat){
