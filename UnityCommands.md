@@ -88,9 +88,9 @@ Perception: Unity Perception Package to generate labels
 
 ### **\<ROBRINU\>\<x\>\<y\>\<z\>\<xr\>\<yr\>\<zr\>**
 **ROBRINU** | string | set **Random** robot initial pose within bounds w.r.t. control board documentation |\
-**x** | float32 | translation, meters |\
+**x** | float32 | translation bounds, meters |\
 **y** | float32 |\
 **z** | float32 | bounded to below water level |\
-**xr** | float32 | rotation, degrees |\
+**xr** | float32 | rotation bounds, degrees |\
 **yr** | float32 |\
 **zr** | float32 |
