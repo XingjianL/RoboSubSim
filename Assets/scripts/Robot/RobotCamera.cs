@@ -48,6 +48,7 @@ public class RobotCamera : MonoBehaviour
     public renderStatesEnum renderState = renderStatesEnum.Off;
     public CamCommandsID currentCommand = CamCommandsID.all;
     private int currentFrames;
+    public bool persistentRendering = false;
     void Start()
     {
         if (SystemInfo.graphicsDeviceID == 0) {
@@ -134,10 +135,11 @@ public class RobotCamera : MonoBehaviour
     }
     public void CommandDisable(){
         #if WINDOWS
-        Debug.Log("Disabling Cameras");
-        frontCamera.enabled = false;
-        downCamera.enabled = false;
-        
+        if (!persistentRendering){
+            Debug.Log("Disabling Cameras");
+            frontCamera.enabled = false;
+            downCamera.enabled = false;
+        }
         frontPerceptionCamera.enabled = false; // idk why ubuntu has fps issue with this, might be Vulkan stuff
         downPerceptionCamera.enabled = false;
         #endif

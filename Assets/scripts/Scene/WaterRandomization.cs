@@ -37,7 +37,7 @@ public class WaterRandomization : MonoBehaviour
     }
     public void toggleVisibilityProfile(bool Clear){
         if (Clear){
-            centerVisibility = 7f;
+            centerVisibility = 10f;
         } else {
             centerVisibility = 5f;
         }
