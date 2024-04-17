@@ -50,7 +50,7 @@ public class SceneManagement : MonoBehaviour
     public int tcpObjectSelect;
     public string[] sceneLists = new string[] { "Scenes/LobbyScene",
                                                 "Scenes/OutdoorsScene",
-                                                "Scenes/OutdoorsScene"};
+                                                "Scenes/G_OutDoors"};
     public bool sceneRefresh = false;
     public int sceneSelect = 0;
     public bool simCBRefresh = false;
@@ -311,7 +311,7 @@ public class SceneManagement : MonoBehaviour
         togglePhysics((sceneToggles & 0b0000_0010) != 0);
         if ((sceneToggles & 0b0000_0100) != 0){
             // random pool textures
-            RandomizeMaterial(selectObject(POOLMESH, 0), 1);
+            RandomizeMaterial(selectObject(POOLMESH, 0), -1);
         }
         if ((sceneToggles & 0b0000_1000) != 0){
             // random caustics
