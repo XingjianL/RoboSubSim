@@ -197,23 +197,35 @@ public class SceneManagement : MonoBehaviour
             Screen.SetResolution(width, height, false);
         }
         if (height > 0 && width > 0){
-            if (script.imgHeight != height || script.imgWidth != width){
-                script.imgHeight = height;
-                script.imgWidth = width;
-                ui_script.ImageHeight.text = script.imgHeight.ToString();
-                ui_script.ImageWidth.text = script.imgWidth.ToString();
-                // check current tcp server (kill and re-enable on new robot)
-                //bool hasServer = tcpServer.runServer;
-                //if (hasServer) {setupTCPServer(tcpServer.IPAddr, tcpServer.port, false, tcpServer.msPerTransmit);}
-
-                // create a new robot with proper perception camera resolutions
-                GameObject newrobot = copyNewObject(robot);
-                Destroy(robot);
-                replaceObjectInArray(newrobot, ROBOT, robotID);
-                script = newrobot.GetComponent<RobotCamera>();
-                
-                
-            }
+            script.imgHeight = height;
+            script.imgWidth = width;
+            ui_script.ImageHeight.text = script.imgHeight.ToString();
+            ui_script.ImageWidth.text = script.imgWidth.ToString();
+            // check current tcp server (kill and re-enable on new robot)
+            //bool hasServer = tcpServer.runServer;
+            //if (hasServer) {setupTCPServer(tcpServer.IPAddr, tcpServer.port, false, tcpServer.msPerTransmit);}
+            // create a new robot with proper perception camera resolutions
+            GameObject newrobot = copyNewObject(robot);
+            Destroy(robot);
+            replaceObjectInArray(newrobot, ROBOT, robotID);
+            script = newrobot.GetComponent<RobotCamera>();
+            //if (script.imgHeight != height || script.imgWidth != width){
+            //    script.imgHeight = height;
+            //    script.imgWidth = width;
+            //    ui_script.ImageHeight.text = script.imgHeight.ToString();
+            //    ui_script.ImageWidth.text = script.imgWidth.ToString();
+            //    // check current tcp server (kill and re-enable on new robot)
+            //    //bool hasServer = tcpServer.runServer;
+            //    //if (hasServer) {setupTCPServer(tcpServer.IPAddr, tcpServer.port, false, tcpServer.msPerTransmit);}
+//
+            //    // create a new robot with proper perception camera resolutions
+            //    GameObject newrobot = copyNewObject(robot);
+            //    Destroy(robot);
+            //    replaceObjectInArray(newrobot, ROBOT, robotID);
+            //    script = newrobot.GetComponent<RobotCamera>();
+            //    
+            //    
+            //}
             //
             
             
