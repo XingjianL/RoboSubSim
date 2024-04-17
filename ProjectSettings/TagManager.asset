@@ -12,6 +12,7 @@ TagManager:
   - SceneManagement
   - WaterColor
   - PoolMesh
+  - Buoy
   layers:
   - Default
   - TransparentFX

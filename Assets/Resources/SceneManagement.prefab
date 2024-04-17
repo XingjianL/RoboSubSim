@@ -55,7 +55,7 @@ MonoBehaviour:
   sceneLists:
   - Scenes/LobbyScene
   - Scenes/OutdoorsScene
-  - Scenes/OutdoorsScene
+  - Scenes/G_OutDoors
   sceneRefresh: 0
   sceneSelect: 0
   simCBRefresh: 0
@@ -139,3 +139,9 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 3656d0aa017075d48939785eefd39dc1, type: 2}
     - {fileID: 2100000, guid: 5932f2760d420ff4da6d82bd54fe830d, type: 2}
     - {fileID: 2100000, guid: 82f5feab8d85b3d4bb877287d1f8fb27, type: 2}
+  textureList:
+  - textures:
+    - {fileID: 2800000, guid: 9734b6b096861da468027c7760a3bae3, type: 3}
+    - {fileID: 2800000, guid: 03ba89a7b5e442043a788f50bf31fde8, type: 3}
+    - {fileID: 2800000, guid: e00815a2f718a2d40b9596922f4d3363, type: 3}
+    - {fileID: 2800000, guid: 49cf51665bd44d24b8b409da2955e4d5, type: 3}
