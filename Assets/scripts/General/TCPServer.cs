@@ -160,9 +160,6 @@ public class CommandPacket{
             if (isCommand(command.Value)) {
                 is_command = true;
                 Debug.Log("Received Command: " + command.Key + " ID: " + System.BitConverter.ToUInt16(new byte[] {body[1], body[0]}, 0));
-                if (System.BitConverter.ToUInt16(new byte[] {body[1], body[0]}, 0) < 20000){
-                    sceneManagement.allCommandsReceived.Add(command.Key);
-                }
                 switch(command.Key){
                     case "SIMSTAT":
                         //Debug.Log("SIMSTAT: " + ToString());
@@ -178,6 +175,7 @@ public class CommandPacket{
                         //process_code |= PROCESS_CODES.SIM_WDGF;
                         break;
                     case "ACK":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         if(body[7] != 0) {
                             Debug.LogWarning("Received problematic ACK message from CB. ID: " 
                                 + System.BitConverter.ToUInt16(new byte[] {body[6], body[5]}, 0) 
@@ -195,10 +193,12 @@ public class CommandPacket{
                         //Debug.Log("ACK: " + ToString());
                         break;
                     case "WDGS":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         process_code = PROCESS_CODES.WDGS_REPLY;
                         //Debug.Log("WDGS: " + ToString());
                         break;
                     case "SASSISTTN":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         int newLength = body.Length-4;
                         byte[] temp = new byte[newLength];
                         System.Buffer.BlockCopy(body, 0, temp, 0, 2);
@@ -214,6 +214,7 @@ public class CommandPacket{
                         break;
                     // simulation environment commands
                     case "SIMCBTOGU":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         bool _simcb_connect = true;
                         if (body[11] == 0b0000_0000) {
                             _simcb_connect = false;
@@ -223,6 +224,7 @@ public class CommandPacket{
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
                     case "CAPTUREU":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         if (sceneManagement.getCameraMode() == body[10]){
                             sceneManagement.captureImage(body[10]);
                         } else {
@@ -232,6 +234,7 @@ public class CommandPacket{
                     	process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
                     case "CAMCFGU":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         int cheight = System.BitConverter.ToInt32(body, 9);
                         int cwidth = System.BitConverter.ToInt32(body, 13);
                         sceneManagement.camCFG[0] = cheight;
@@ -252,15 +255,18 @@ public class CommandPacket{
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
                     case "SETENVU":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         sceneManagement.sceneSelect = body[9];
                         sceneManagement.sceneRefresh = true;
                         //sceneManagement.ResetScene();
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
                     case "ROBOTSELU":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                     	process_code = PROCESS_CODES.UNITY_REPLY;
                         goto default;
                     case "ROBCFGU":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         float[] rob_cfg = ParseFloats(body, 6, 9);
                         Debug.Log("Received CFG: " + System.String.Join(',', rob_cfg));
                         sceneManagement.robotCFG[0] = rob_cfg[0];
@@ -273,6 +279,7 @@ public class CommandPacket{
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
                     case "SCECFGU":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         sceneManagement.sceneToggles = body[9];
                         sceneManagement.scatterColorBias = System.BitConverter.ToInt16(body, 10);
                         Debug.Log("bias: " + sceneManagement.scatterColorBias);
@@ -280,6 +287,7 @@ public class CommandPacket{
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
                     case "ROBINIU":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         float[] rob_init_pose = ParseFloats(body, 6, 9);
                         Debug.Log("ini: " + System.String.Join(", ", rob_init_pose));
                         sceneManagement.setRobotPos(rob_init_pose[0], rob_init_pose[1], rob_init_pose[2]);
@@ -288,6 +296,7 @@ public class CommandPacket{
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
                     case "ROBRINU":
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         float[] rob_init_pose_bounds = ParseFloats(body, 6, 9);
                         sceneManagement.setRobotRandPose(rob_init_pose_bounds[0],rob_init_pose_bounds[1],rob_init_pose_bounds[2],
                                                         rob_init_pose_bounds[3],rob_init_pose_bounds[4],rob_init_pose_bounds[5]);
@@ -298,6 +307,7 @@ public class CommandPacket{
                         process_code = PROCESS_CODES.NO_REPLY;
                         break;
                     default:
+                        sceneManagement.allCommandsReceived.Add(command.Key);
                         Debug.Log("Unimplemented command: " + command.Key);
                         break;
                 }
