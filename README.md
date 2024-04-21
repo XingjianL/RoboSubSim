@@ -12,7 +12,12 @@ Here is the paper (for a course project) for various features and architecture i
 
 
 ### Usage (Packaged Application)
-Go to Releases
+* Go to Releases to install
+* For use go and install SimCB here [https://github.com/MB3hel/AUVControlBoard/releases/tag/v1.1.0-beta2](https://github.com/MB3hel/AUVControlBoard/releases/tag/v1.1.0-beta2)
+* Also get the Rust robot code here [https://github.com/ncsurobotics/SW8S-Rust/tree/unity_sim_tcp](https://github.com/ncsurobotics/SW8S-Rust/tree/unity_sim_tcp)
+* The tests are written in `SW8S-Rust/comms/control_board/mod.rs`, and `SW8S-Rust/src/comms/control_board/mod.rs`
+* Enter the IP for TCP server so that SW8S-Rust can connect to, but SimCB is expected to be on localhost
+* run `cargo test unity_tcp_connect`
 
 ### Usage (With Unity Editor)
 * Download Unity Hub and get a free license
