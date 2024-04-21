@@ -22,11 +22,12 @@ Go to Releases
 * It should be good to go now. 
 
 ### Development Progress Videos (Note: 2024/04/21)
-Dynamics Testing: [https://youtu.be/PzeR5JaaQD4](https://youtu.be/PzeR5JaaQD4)
-Trajectory Visualization: [https://youtu.be/6XFExcnqDvA](https://youtu.be/6XFExcnqDvA)
+Dynamics Testing: [https://youtu.be/PzeR5JaaQD4](https://youtu.be/PzeR5JaaQD4)\
+Trajectory Visualization: [https://youtu.be/6XFExcnqDvA](https://youtu.be/6XFExcnqDvA)\
 Synthetic Image Generation w/ Domain Randomization: [https://youtu.be/zcOHj0vwbpA](https://youtu.be/zcOHj0vwbpA)
 
 
-### Images
+### Images 
+#### (Top: Synthetic and Real Images, Bottom: Detection from YOLOv5n Trained on only Synthetic Images)
 ![](./readme_images/real_and_synthetic.png) 
 ![](./readme_images/real_and_synthetic_inf.png)
