@@ -167,8 +167,11 @@ public class Robot_UI : MonoBehaviour
                             "MotorMode: " + forces.MotorMode + " WDog: " + forces.WDogStatus + "\n";
         }
         if (sceneManagement.allCommandsReceived.Count > 0){
+            int[] pool_counts = sceneManagement.getTCPPoolCounts();
             robot_state +=  "--Command Received--\n"+
-                            "Command: " + sceneManagement.allCommandsReceived[sceneManagement.allCommandsReceived.Count-1];
+                            "Latest Command: " + sceneManagement.allCommandsReceived[sceneManagement.allCommandsReceived.Count-1] + "\n" +
+                            "RustPool |\tReceive: " + pool_counts[0] + ", Send: " + pool_counts[1] + "\n" +
+                            "SimCBPool|\tReceive: " + pool_counts[2] + ", Send: " + pool_counts[3] + "\n";
         }
         RobotStateText.text = robot_state;
     }

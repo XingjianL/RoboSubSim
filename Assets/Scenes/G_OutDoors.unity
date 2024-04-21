@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1652.4421, g: 1482.4913, b: 1630.0725, a: 1}
+  m_IndirectSpecularColor: {r: 1652.4031, g: 1482.4786, b: 1630.0745, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1082,33 +1082,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7325955720987588687, guid: b74ea355523470b4c968ffdd0a45ed84,
-        type: 3}
-      propertyPath: downCamera
-      value: 
-      objectReference: {fileID: 1855465548}
-    - target: {fileID: 7325955720987588687, guid: b74ea355523470b4c968ffdd0a45ed84,
-        type: 3}
-      propertyPath: frontCamera
-      value: 
-      objectReference: {fileID: 1855465549}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b74ea355523470b4c968ffdd0a45ed84, type: 3}
---- !u!20 &1855465548 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 1501308199644629055, guid: b74ea355523470b4c968ffdd0a45ed84,
-    type: 3}
-  m_PrefabInstance: {fileID: 1855465547}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &1855465549 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 7511512357573543901, guid: b74ea355523470b4c968ffdd0a45ed84,
-    type: 3}
-  m_PrefabInstance: {fileID: 1855465547}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2013410473
 GameObject:
   m_ObjectHideFlags: 1

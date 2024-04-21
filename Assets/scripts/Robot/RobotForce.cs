@@ -21,8 +21,6 @@ public class RobotForce : MonoBehaviour
 
     [HideInInspector] public int WDogStatus;
     [HideInInspector] public int MotorMode;
-    float timer = 0;
-    float random_thrust = 0;
     public enum controlMode : int {
         Raw = 0,
         Local = 1,
@@ -61,11 +59,7 @@ public class RobotForce : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timer > 2) {
-            timer = 0;
-            random_thrust = Random.Range(-1f,1f);
-        }
-        timer += Time.deltaTime;
+        Debug.Log("THRUSTS[LOG],"+thrust_strengths.ToString()+","+Time.deltaTime);
     }
     public void set_motor_cfg(float f_KGF, float r_KGF){
         if (f_KGF > 0){

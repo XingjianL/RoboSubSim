@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Perception.GroundTruth;
+using UnityEngine.Rendering.HighDefinition;
 public class RobotCamera : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -15,6 +16,8 @@ public class RobotCamera : MonoBehaviour
     private PerceptionCamera downPerceptionCameraScript;
     private Camera frontPerceptionCamera;
     private Camera downPerceptionCamera;
+    public CustomPassVolume BlurFront;
+    public CustomPassVolume BlurDown;
     //[HideInInspector]
     public int frontCounter = 0;
     //[HideInInspector]
@@ -82,8 +85,8 @@ public class RobotCamera : MonoBehaviour
         downCamera.targetTexture = new RenderTexture(imgWidth, imgHeight, 24);
         frontPerceptionCamera.targetTexture = new RenderTexture(imgWidth, imgHeight, 24);
         downPerceptionCamera.targetTexture = new RenderTexture(imgWidth, imgHeight, 24);
-        print(imgWidth);
-        print(imgHeight);
+        Debug.Log(imgWidth);
+        Debug.Log(imgHeight);
     }
     // Update is called once per frame
     void Update()

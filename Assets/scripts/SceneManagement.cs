@@ -148,9 +148,12 @@ public class SceneManagement : MonoBehaviour
         ui_script.SendFreq.text = msPerTransmit.ToString();
     }
     public void setupSimCBConnect(bool simCB_Connect){
-        Debug.Log("SimCB Connect Attempt: " + simCB_Connect);
+        //Debug.Log("SimCB Connect Attempt: " + simCB_Connect);
         tcpServer.simCB_Connect = simCB_Connect;
         ui_script.runSimCB.isOn = simCB_Connect;
+    }
+    public int[] getTCPPoolCounts(){
+        return tcpServer.getPoolCounts();
     }
     /// <summary>
     /// Robot Dynamics Configurations
@@ -312,6 +315,11 @@ public class SceneManagement : MonoBehaviour
         robot.init_location = new Vector3(2*xp*((float)rand.NextDouble()-0.5f), 2*yp*((float)rand.NextDouble()-0.5f), System.Math.Clamp(2*zp*((float)rand.NextDouble()-0.5f), -10.0f, -0.5f));
         robot.init_rotation = Quaternion.Euler(2*xr*((float)rand.NextDouble()-0.5f), 2*yr*((float)rand.NextDouble()-0.5f), 2*zr*((float)rand.NextDouble()-0.5f));
     }
+    public void setCameraBlur(bool on, int robotID = 0){
+        RobotCamera robot = allRobots[robotID].cameraScript;
+        robot.BlurFront.enabled = on;
+        robot.BlurDown.enabled = on;
+    }
     ///
     /// 
     /// 
@@ -335,16 +343,16 @@ public class SceneManagement : MonoBehaviour
     public void setPoolPostProcesses(byte toggles){
         GameObject pool = selectObject(POOL, 0);
         Volume poolPostProcess = pool.GetComponentInChildren<Volume>();
-        Debug.Log(poolPostProcess);
+        //Debug.Log(poolPostProcess);
         if ((toggles & 0b0000_0001) > 0){
             if (poolPostProcess.profile.TryGet<LensDistortion>(out var ld)){ld.active = true;}
         } else {
             if (poolPostProcess.profile.TryGet<LensDistortion>(out var ld)){ld.active = false;}
         }
         if ((toggles & 0b0000_0010) > 0){
-            if (poolPostProcess.profile.TryGet<Fog>(out var f)){f.active = true;}
+            if (poolPostProcess.profile.TryGet<Fog>(out var f)){f.active = true; setCameraBlur(true);}
         } else {
-            if (poolPostProcess.profile.TryGet<Fog>(out var f)){f.active = false;}
+            if (poolPostProcess.profile.TryGet<Fog>(out var f)){f.active = false; setCameraBlur(false);}
         }
         if ((toggles & 0b0000_0100) > 0){
             if (poolPostProcess.profile.TryGet<ChromaticAberration>(out var ca)){ca.active = true;}
@@ -463,6 +471,7 @@ public class SceneManagement : MonoBehaviour
             waterBody.GetComponent<WaterRandomization>().toggleVisibilityProfile(far);
         }
     }
+    
     public void RandomizeMaterial(GameObject obj, int typeMat){
         textureRandomizationScript.RandomizeMaterial(obj, typeMat);
     }

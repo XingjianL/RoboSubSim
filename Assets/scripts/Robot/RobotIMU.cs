@@ -68,6 +68,9 @@ public struct IMU{
             robotRotation.y = -quaternion.x;
             robotRotation.x = quaternion.z;
         }
+        public override string ToString(){
+            return $"IMU[LOG],{robotPosition.x},{robotPosition.y},{robotPosition.z},{robotRotation.w},{robotRotation.x},{robotRotation.y},{robotRotation.z}";
+        }
 }
 public class RobotIMU : MonoBehaviour
 {
@@ -98,10 +101,10 @@ public class RobotIMU : MonoBehaviour
         imu = new IMU(0,0,0,0);
     }
     // Update is called once per frame
-    //void Update()
-    //{
-        
-    //}
+    void Update()
+    {
+        Debug.Log(imu.ToString()+","+Time.deltaTime);    
+    }
     void FixedUpdate(){
         imu.quaternion = transform.rotation;
         imu.position = transform.position;
