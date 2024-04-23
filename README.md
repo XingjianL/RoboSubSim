@@ -3,13 +3,22 @@ This is a maintained project aimed at simulating underwater environments for aut
 
 Here is the paper (for a course project) for various features and architecture in the simulator: [https://drive.google.com/file/d/1eip_NG7Cf2Fsl2w5lEbMnAuSLVgT55id/view?usp=sharing](https://drive.google.com/file/d/1eip_NG7Cf2Fsl2w5lEbMnAuSLVgT55id/view?usp=sharing)
 
+### Completions
+* SW8 Dynamics and Communications with Rust and SimCB
+* Photorealistic Outdoor Pool (1 scene)
+* Automatic annotations
+* Domain Randomization (visuals)
+* Basic Logging (robot position)
 
-
-### Targets
-* Photorealism (HDRP Water, Domain Randomizations, Successful Sim2Real Transfer)
-* Robot Simulation (Fake robot that emulates real robot, ie. is controlled by the same code and has the same sort of interaction with the environment)
-* Conveniences (Auto labeled bounding boxes, segmentation/depth imaging, data generation, maybe even RL)
-
+### Feature Plans
+* Dynamics Domain Randomization
+* Additional environments (Indoor pools)
+* Additional Robot Models
+* Additional Sensors (acoustics, depth images, etc)
+* ROS
+* ml-agents
+* control with keyboard and mouse
+* Logging
 
 ### Usage (Packaged Application)
 * Go to Releases to install
