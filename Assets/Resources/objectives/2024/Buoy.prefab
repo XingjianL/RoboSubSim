@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56c82175fa62a554c8031da2e052ae62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterHeight: -3
+  waterHeight: -1.8
   waterDensity: 1.025
   volumeDisplaced: 6
   forceVisual: 0
