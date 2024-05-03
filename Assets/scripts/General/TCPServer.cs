@@ -237,16 +237,20 @@ public class CommandPacket{
                         sceneManagement.allCommandsReceived.Add(command.Key);
                         int cheight = System.BitConverter.ToInt32(body, 9);
                         int cwidth = System.BitConverter.ToInt32(body, 13);
+                        float cexposure = ParseFloats(body, 1, 17)[0];
+                        float cblur = ParseFloats(body, 1, 21)[0];
                         sceneManagement.camCFG[0] = cheight;
                         sceneManagement.camCFG[1] = cwidth;
-                        sceneManagement.camCFG[2] = body[17];
-                        sceneManagement.camCFG_Effects = body[18];
-                        if ((body[18] & 0b1000_0000) != 0){
+                        sceneManagement.camCFG[2] = body[25];
+                        sceneManagement.camCFG_Effects = body[26];
+                        sceneManagement.camCFG_floats[0] = cexposure;
+                        sceneManagement.camCFG_floats[1] = cblur;
+                        if ((sceneManagement.camCFG_Effects & 0b1000_0000) != 0){
                             sceneManagement.rgbScreenResizeToggle = true;
                         } else {
                             sceneManagement.rgbScreenResizeToggle = false;
                         }
-                        if ((body[18] & 0b0100_0000) != 0){
+                        if ((sceneManagement.camCFG_Effects & 0b0100_0000) != 0){
                             sceneManagement.ShowGUIToggle = true;
                         } else {
                             sceneManagement.ShowGUIToggle = false;

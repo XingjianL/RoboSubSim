@@ -52,6 +52,23 @@ public class RobotCamera : MonoBehaviour
     public CamCommandsID currentCommand = CamCommandsID.all;
     private int currentFrames;
     public bool persistentRendering = false;
+
+    public void setCameraExposure(float exposure_s){
+        frontCamera.shutterSpeed = exposure_s;
+        downCamera.shutterSpeed = exposure_s;
+    }
+    public void setCameraBlurryness(float blur_s){
+        foreach (var pass in BlurFront.customPasses) {
+            if (pass is SlightBlur b) {
+                b.radius = blur_s;
+            }
+        }
+        foreach (var pass in BlurDown.customPasses) {
+            if (pass is SlightBlur b) {
+                b.radius = blur_s;
+            }
+        }
+    }
     void Start()
     {
         if (SystemInfo.graphicsDeviceID == 0) {

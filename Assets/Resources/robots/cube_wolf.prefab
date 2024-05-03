@@ -1303,7 +1303,7 @@ Camera:
   m_GateFitMode: 1
   m_FOVAxisMode: 0
   m_Iso: 200
-  m_ShutterSpeed: 0.033333335
+  m_ShutterSpeed: 0.01
   m_Aperture: 16
   m_FocusDistance: 1
   m_FocalLength: 0.9093267
@@ -1327,7 +1327,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 2
@@ -1516,12 +1516,13 @@ MonoBehaviour:
     rid: 5209166405056069638
   m_Labelers:
   - rid: 5209166405056069646
+  - rid: 112144776442150912
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   id: down_cam
   description: 
-  captureRgbImages: 0
+  captureRgbImages: 1
   firstCaptureFrame: 0
   captureTriggerMode: 1
   manualSensorAffectSimulationTiming: 0
@@ -1529,11 +1530,19 @@ MonoBehaviour:
   framesBetweenCaptures: 0
   showVisualizations: 0
   alphaThreshold: 0.1
-  overrideLayerMask: 0
+  overrideLayerMask: 1
   useAccumulation: 0
   references:
     version: 2
     RefIds:
+    - rid: 112144776442150912
+      type: {class: BoundingBox2DLabeler, ns: UnityEngine.Perception.GroundTruth.Labelers,
+        asm: Unity.Perception.Runtime}
+      data:
+        enabled: 1
+        annotationId: bounding box
+        idLabelConfig: {fileID: 11400000, guid: 321280e15368ae94bb46af78c96aa314,
+          type: 2}
     - rid: 5209166405056069638
       type: {class: UnityCameraSensor, ns: UnityEngine.Perception.GroundTruth.Sensors,
         asm: Unity.Perception.Runtime}
@@ -1573,7 +1582,7 @@ MonoBehaviour:
     - rid: 7943112262378323968
       type: {class: SlightBlur, ns: , asm: Assembly-CSharp}
       data:
-        m_Name: Custom Pass
+        m_Name: Blur
         enabled: 1
         targetColorBuffer: 0
         targetDepthBuffer: 0
@@ -7151,7 +7160,7 @@ Camera:
   m_GateFitMode: 1
   m_FOVAxisMode: 0
   m_Iso: 200
-  m_ShutterSpeed: 0.033333335
+  m_ShutterSpeed: 0.01
   m_Aperture: 16
   m_FocusDistance: 1
   m_FocalLength: 0.9093267
@@ -7438,7 +7447,7 @@ MonoBehaviour:
     - rid: 7943112262378323968
       type: {class: SlightBlur, ns: , asm: Assembly-CSharp}
       data:
-        m_Name: Custom Pass
+        m_Name: Blur
         enabled: 1
         targetColorBuffer: 0
         targetDepthBuffer: 0

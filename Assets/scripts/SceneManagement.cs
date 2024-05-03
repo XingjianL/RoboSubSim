@@ -50,7 +50,8 @@ public class SceneManagement : MonoBehaviour
     public int tcpObjectSelect;
     public string[] sceneLists = new string[] { "Scenes/LobbyScene",
                                                 "Scenes/OutdoorsScene",
-                                                "Scenes/G_OutDoors"};
+                                                "Scenes/G_OutDoors",
+                                                "Scenes/RectPoolScene"};
     public bool sceneRefresh = false;
     public int sceneSelect = 0;
     public bool simCBRefresh = false;
@@ -59,6 +60,7 @@ public class SceneManagement : MonoBehaviour
     public float[] robotCFG = {-1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f};
     public bool camCFGRefresh = false;
     public int[] camCFG = {640, 480, 0};
+    public float[] camCFG_floats = {0.033f, 2.0f};
     public byte camCFG_Effects = 0;
     public bool rgbScreenResizeToggle;
     public bool ShowGUIToggle;
@@ -212,26 +214,6 @@ public class SceneManagement : MonoBehaviour
             Destroy(robot);
             replaceObjectInArray(newrobot, ROBOT, robotID);
             script = newrobot.GetComponent<RobotCamera>();
-            //if (script.imgHeight != height || script.imgWidth != width){
-            //    script.imgHeight = height;
-            //    script.imgWidth = width;
-            //    ui_script.ImageHeight.text = script.imgHeight.ToString();
-            //    ui_script.ImageWidth.text = script.imgWidth.ToString();
-            //    // check current tcp server (kill and re-enable on new robot)
-            //    //bool hasServer = tcpServer.runServer;
-            //    //if (hasServer) {setupTCPServer(tcpServer.IPAddr, tcpServer.port, false, tcpServer.msPerTransmit);}
-//
-            //    // create a new robot with proper perception camera resolutions
-            //    GameObject newrobot = copyNewObject(robot);
-            //    Destroy(robot);
-            //    replaceObjectInArray(newrobot, ROBOT, robotID);
-            //    script = newrobot.GetComponent<RobotCamera>();
-            //    
-            //    
-            //}
-            //
-            
-            
         }
         
         if (ShowGUIToggle){
@@ -242,7 +224,14 @@ public class SceneManagement : MonoBehaviour
             ui_script.cameraModeDropdown.value = (int)script.currentCommand;
         }
         
-        
+        if (camCFG_floats[0] > 0){
+            script.setCameraExposure(camCFG_floats[0]);
+        }
+        if (camCFG_floats[1] > 0){
+            script.setCameraBlurryness(camCFG_floats[1]);
+        } else {
+            script.setCameraBlurryness(0.0f);
+        }
     }
     public int getCameraMode(int robotID = 0){
         GameObject robot = selectObject(ROBOT, robotID);
