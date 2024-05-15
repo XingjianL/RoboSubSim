@@ -53,6 +53,10 @@ public class RobotCamera : MonoBehaviour
     private int currentFrames;
     public bool persistentRendering = false;
 
+    public void setMainCamera(){
+        mainCamera = Camera.main;
+        print(mainCamera.name);
+    }
     public void setCameraExposure(float exposure_s){
         frontCamera.shutterSpeed = exposure_s;
         downCamera.shutterSpeed = exposure_s;
@@ -71,6 +75,7 @@ public class RobotCamera : MonoBehaviour
     }
     void Start()
     {
+        setMainCamera();
         if (SystemInfo.graphicsDeviceID == 0) {
             Debug.Log("Running in Server Mode, Cannot Render Images");
             return;

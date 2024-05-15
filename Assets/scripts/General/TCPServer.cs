@@ -286,6 +286,7 @@ public class CommandPacket{
                         sceneManagement.allCommandsReceived.Add(command.Key);
                         sceneManagement.sceneToggles = body[9];
                         sceneManagement.scatterColorBias = System.BitConverter.ToInt16(body, 10);
+                        sceneManagement.sceneCFG_floats[0] = ParseFloats(body, 1, 12)[0];
                         //Debug.Log("bias: " + sceneManagement.scatterColorBias);
                         sceneManagement.sceneTogglesRefresh = true;
                         process_code = PROCESS_CODES.UNITY_REPLY;

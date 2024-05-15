@@ -103,7 +103,7 @@ public class RobotForce : MonoBehaviour
         // unity_robot:[x:front,z:left,y:up,r,p,y]
         
         Vector3 world_direction = transform.TransformDirection(new Vector3(other_control[1], other_control[2], -other_control[0]));// local -> world
-        m_rigidBody.velocity = world_direction;
+        m_rigidBody.linearVelocity = world_direction;
     }
     private void set_body_angular_velocity(){
         Vector3 world_direction = transform.TransformDirection(new Vector3(other_control[3], other_control[5], -other_control[4]));

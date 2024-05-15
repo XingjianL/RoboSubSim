@@ -34,6 +34,7 @@ public class TCPRobot{
 [RequireComponent (typeof(TCPServer))]
 public class SceneManagement : MonoBehaviour
 {
+    public Camera playerCamera;
     public Robot_UI ui_script;
     public TextureRandomization textureRandomizationScript;
     const int ROBOT = 0;
@@ -65,6 +66,7 @@ public class SceneManagement : MonoBehaviour
     public bool rgbScreenResizeToggle;
     public bool ShowGUIToggle;
     public byte sceneToggles;
+    public float[] sceneCFG_floats = {5.0f, 0.0f, 0.0f, 0.0f};
     public bool sceneTogglesRefresh;
     public bool refreshRobotPos;
     public short scatterColorBias;
@@ -83,10 +85,17 @@ public class SceneManagement : MonoBehaviour
         StartCoroutine(ResetSceneCoroutine());
         sceneRefresh = false;
     }
+    private IEnumerator WaitCamera()
+    {
+        yield return new WaitForSeconds(0.1f);
+        playerCamera.enabled = true;
+        print("WaitCamera " + Time.time);
+    }
     // Start is called before the first frame update
     void Start()
     {
         setupTCPServer();
+        StartCoroutine(WaitCamera());
     }
     // Update is called once per frame
     // Mark: Update
@@ -189,10 +198,10 @@ public class SceneManagement : MonoBehaviour
         }
         allRobots[robotID].controlScript.set_motor_cfg(f_KGF, r_KGF);
         if (ldrag > 0){
-            allRobots[robotID].controlScript.m_rigidBody.drag = ldrag;
+            allRobots[robotID].controlScript.m_rigidBody.linearDamping = ldrag;
         }
         if (adrag > 0){
-            allRobots[robotID].controlScript.m_rigidBody.angularDrag = adrag;
+            allRobots[robotID].controlScript.m_rigidBody.angularDamping = adrag;
         }
     }
     public void configRobotCamera(int height = -1, int width = -1, int mode = -1, int robotID = 0){
@@ -327,7 +336,8 @@ public class SceneManagement : MonoBehaviour
             poolCausticsRandom();
         }
         // toggle water visibility
-        poolConditionToggle((sceneToggles & 0b0001_0000) != 0);
+        poolSurfaceConditionToggle((sceneToggles & 0b0001_0000) != 0);
+        poolUnderwaterVisibility(sceneCFG_floats[0]);
     }
     public void setPoolPostProcesses(byte toggles){
         GameObject pool = selectObject(POOL, 0);
@@ -454,10 +464,16 @@ public class SceneManagement : MonoBehaviour
             waterBody.GetComponent<WaterRandomization>().setRefraction(on);
         }
     }
-    public void poolConditionToggle(bool far){
+    public void poolSurfaceConditionToggle(bool clear){
         var waterBodies = GameObject.FindGameObjectsWithTag("WaterColor");
         foreach(GameObject waterBody in waterBodies){
-            waterBody.GetComponent<WaterRandomization>().toggleVisibilityProfile(far);
+            waterBody.GetComponent<WaterRandomization>().toggleVisibilityProfile(clear);
+        }
+    }
+    public void poolUnderwaterVisibility(float multiplier){
+        var waterBodies = GameObject.FindGameObjectsWithTag("WaterColor");
+        foreach(GameObject waterBody in waterBodies){
+            waterBody.GetComponent<WaterRandomization>().multiplierVisibility = multiplier;
         }
     }
     

@@ -110,8 +110,8 @@ public class RobotIMU : MonoBehaviour
         imu.position = transform.position;
         // v1 = v0 + acc * dt
         // acc = (v1 - v0) / dt
-        imu.linearAccel = (m_rigidbody.velocity - imu.linearVel)/Time.fixedDeltaTime; 
-        imu.linearVel = m_rigidbody.velocity;
+        imu.linearAccel = (m_rigidbody.linearVelocity - imu.linearVel)/Time.fixedDeltaTime; 
+        imu.linearVel = m_rigidbody.linearVelocity;
         
         imu.applyAccelNoise();
         imu.applyGyroNoise();

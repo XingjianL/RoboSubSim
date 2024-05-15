@@ -62,6 +62,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
@@ -119,8 +122,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.0000005, z: 1.0000005}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.0000005, z: 1.0209539}
+  m_Center: {x: 0, y: -1.6793057e-17, z: 0.010476773}
 --- !u!1 &5102322436314122177
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8f6fd535518f5540b4bcc3099582f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 2
+  m_Version: 3
   decalLayerMask: 1
   lightLayerMask: 1
   largeBand0FadeToggle: 1
@@ -177,8 +180,7 @@ MonoBehaviour:
   meshRenderers:
   - {fileID: 1829506540814033161}
   timeMultiplier: 1
-  cpuSimulation: 0
-  cpuFullResolution: 0
+  scriptInteractions: 0
   cpuEvaluateRipples: 0
   customMaterial: {fileID: -876546973899608171, guid: 478363af54fb3854d9477bb760e83b14,
     type: 3}
@@ -186,6 +188,10 @@ MonoBehaviour:
   endSmoothness: 0
   smoothnessFadeStart: 100
   smoothnessFadeDistance: 500
+  tessellation: 1
+  maxTessellationFactor: 3
+  tessellationFactorFadeStart: 150
+  tessellationFactorFadeRange: 1850
   refractionColor: {r: 0.45641106, g: 0.5149178, b: 0.5143361, a: 1}
   maxRefractionDistance: 3.5
   absorptionDistance: 7
@@ -217,7 +223,6 @@ MonoBehaviour:
   volumeHeight: 0
   volumePrority: 1
   absorptionDistanceMultiplier: 2.5
-  colorPyramidOffset: 1
   underWaterAmbientProbeContribution: 1
   underWaterScatteringColorMode: 0
   underWaterScatteringColor: {r: 0.19120172, g: 0.30946895, b: 0.2086369, a: 1}
@@ -240,7 +245,9 @@ MonoBehaviour:
   foamResolution: 512
   foamAreaSize: {x: 200, y: 200}
   foamAreaOffset: {x: 0, y: 0}
-  foamPersistenceMultiplier: 0.5
+  foamPersistenceMultiplier: 1
+  foamCurrentInfluence: 0.6
+  foamColor: {r: 1, g: 1, b: 1, a: 1}
   foamTextureTiling: 0.2
   foamSmoothness: 0.3
   simulationFoam: 1

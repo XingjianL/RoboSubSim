@@ -83,7 +83,7 @@ class SlightBlur : CustomPass
         {
             if (colorCopy?.rt == null || !colorCopy.rt.IsCreated())
             {
-                var hdrpAsset = (GraphicsSettings.renderPipelineAsset as HDRenderPipelineAsset);
+                var hdrpAsset = (GraphicsSettings.defaultRenderPipeline as HDRenderPipelineAsset);
                 var colorBufferFormat = hdrpAsset.currentPlatformRenderPipelineSettings.colorBufferFormat;
 
                 colorCopy = RTHandles.Alloc(
