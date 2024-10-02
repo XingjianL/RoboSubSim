@@ -15,6 +15,11 @@ public class TCPRobot{
     public BuoyancyForces buoyScript;
     public Vector3 init_location = new Vector3(0,0,0); // real robot frame
     public Quaternion init_rotation = new Quaternion(0,0,0,1); // real robot frame
+    public void configLogID(int logID){
+        controlScript.logID = logID;
+        imuScript.logID = logID;
+    }
+
     public void setNewRobot(GameObject robot){
         tcpObject = robot;
         cameraScript = robot.GetComponent<RobotCamera>();
@@ -388,6 +393,7 @@ public class SceneManagement : MonoBehaviour
                 foreach (GameObject rob in GameObject.FindGameObjectsWithTag(tag)){
                     TCPRobot cur = new TCPRobot();
                     cur.setNewRobot(rob);
+                    cur.configLogID(allRobots.Count);
                     allRobots.Add(cur);
                 }
 

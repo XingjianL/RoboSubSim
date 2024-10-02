@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Threading;
 using System.Collections.Generic;
 
+// MARK: Process Codes
 public class PROCESS_CODES{
     public const byte NO_REPLY 	  = 0b0000_0000;
     public const byte SIMCB_REPLY = 0b1000_0000;
@@ -17,6 +18,7 @@ public class PROCESS_CODES{
     
 }
 
+// MARK: Command Packet Class
 public class CommandPacket{
     public byte[] body; // include id, body, crc
     public int body_counter;
@@ -51,6 +53,7 @@ public class CommandPacket{
         EscapeNextByte = false;
         sceneManagement = sceneM;
     }
+    // MARK: Command Packet
     // send from this
     public CommandPacket(SceneManagement sceneM, 
                         ushort id, 
@@ -152,6 +155,8 @@ public class CommandPacket{
         }
         return true;
     }
+
+    // MARK: Commands
     public byte processCommand(Dictionary<string, byte[]> commands){
         byte process_code = PROCESS_CODES.NO_REPLY;
         //Debug.Log("Length: " + body.Length + " Bytes: " + ToString());
@@ -331,6 +336,7 @@ public class CommandPacket{
         return process_code;
     }
 
+    // MARK: Send Packet
     /// <summary>
     /// 
     /// </summary>
@@ -401,6 +407,7 @@ public class CommandPacket{
         return floatValues;
     }
 }
+// MARK: TCPServer Class
 public class TCPServer : MonoBehaviour
 {
     readonly string[] POSSIBLE_COMMANDS = new string[] {

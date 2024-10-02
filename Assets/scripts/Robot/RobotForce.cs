@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class RobotForce : MonoBehaviour
 {
+    public int logID = 0;
     private RobotIMU imu_script;
     public GameObject[] thrusters;
     public float forward_KGF = 2.36f;
@@ -59,8 +60,9 @@ public class RobotForce : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("THRUSTS[LOG],"+thrust_strengths.ToString()+","+Time.deltaTime);
+        Debug.Log(logID+","+"THRUSTS[LOG],"+string.Join(",",thrust_strengths)+","+Time.deltaTime);
     }
+
     public void set_motor_cfg(float f_KGF, float r_KGF){
         if (f_KGF > 0){
             forward_KGF = f_KGF;

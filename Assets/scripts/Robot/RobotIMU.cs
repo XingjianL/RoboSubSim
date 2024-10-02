@@ -18,6 +18,7 @@ public struct IMU{
         public IMU(float accNoise,float accNoiseDrift, float gyNoise, float gyNoiseDrift){
             linearAccel = new Vector3(0,0,0);
             linearVel = new Vector3(0,0,0);
+            angularVel = new Vector3(0,0,0);
             quaternion = new Quaternion(0,0,0,1);
             accelNoise = accNoise;
             accelNoiseDrift = accNoiseDrift;
@@ -69,7 +70,8 @@ public struct IMU{
             robotRotation.x = quaternion.z;
         }
         public override string ToString(){
-            return $"IMU[LOG],{robotPosition.x},{robotPosition.y},{robotPosition.z},{robotRotation.w},{robotRotation.x},{robotRotation.y},{robotRotation.z}";
+            return $"IMU[LOG],{position.x},{position.y},{position.z},{quaternion.w},{quaternion.x},{quaternion.y},{quaternion.z}"+
+            $",{linearVel.x},{linearVel.y},{linearVel.z},{angularVel.x},{angularVel.y},{angularVel.z}";
         }
 }
 public class RobotIMU : MonoBehaviour
@@ -81,6 +83,7 @@ public class RobotIMU : MonoBehaviour
     [Tooltip("drift, deg/s")] public float gyroNoiseDrift = 1.5f;
     public IMU imu;
     Rigidbody m_rigidbody;
+    public int logID = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -103,7 +106,7 @@ public class RobotIMU : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(imu.ToString()+","+Time.deltaTime);    
+        Debug.Log(logID+","+imu.ToString()+","+Time.deltaTime);    
     }
     void FixedUpdate(){
         imu.quaternion = transform.rotation;
