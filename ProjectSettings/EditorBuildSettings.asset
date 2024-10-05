@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/StartScene.unity
     guid: 8b15ac6153791f3269eaabb9fe4fc6d4
   - enabled: 1
-    path: Assets/Scenes/OutdoorsScene.unity
+    path: Assets/Scenes/OutdoorsScene_Multiple.unity
     guid: 8124e5870f4fd4c779e7a5f994e84ad1
   - enabled: 1
     path: Assets/Scenes/LobbyScene.unity
@@ -17,5 +17,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/G_OutDoors.unity
     guid: 9b3d63ed656c3a84facf3695361681eb
+  - enabled: 1
+    path: Assets/Scenes/RectPoolScene.unity
+    guid: edf5094958f58ca42b670d76efdd7bc4
+  - enabled: 1
+    path: Assets/Scenes/OutdoorsScene.unity
+    guid: e1f58a1475cf43a45bee9dbe2c91a498
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 public struct IMU{
         public Vector3 linearAccel;
         public Vector3 linearVel;
+        public Vector3 angularVel;
         public Quaternion quaternion;
         public Quaternion robotRotation;
         public float accelNoise;
@@ -115,6 +116,7 @@ public class RobotIMU : MonoBehaviour
         // acc = (v1 - v0) / dt
         imu.linearAccel = (m_rigidbody.linearVelocity - imu.linearVel)/Time.fixedDeltaTime; 
         imu.linearVel = m_rigidbody.linearVelocity;
+        imu.angularVel = m_rigidbody.angularVelocity;
         
         imu.applyAccelNoise();
         imu.applyGyroNoise();

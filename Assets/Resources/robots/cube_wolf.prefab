@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a47f4f45c703f771a972d0b43c8f2a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
+  mainCameraLocation: {fileID: 2455357415228544627}
   frontCamera: {fileID: 7511512357573543901}
   downCamera: {fileID: 1501308199644629055}
   frontPerceptionCameraObject: {fileID: 8289064031074478848}

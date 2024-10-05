@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.38358, g: 325.10843, b: 430.30963, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -288,6 +288,71 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[1].m_Text
+      value: OutdoorsScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[2].m_Text
+      value: G_OutDoors
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Text
+      value: RectPoolScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Text
+      value: OutdoorsScene_Multiple
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1190763472093276188, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
+        type: 3}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1775504768018210269, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -311,7 +376,7 @@ PrefabInstance:
     - target: {fileID: 1786525936868186891, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.000019987801
+      value: 0.00003196832
       objectReference: {fileID: 0}
     - target: {fileID: 1786525936868186891, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,
         type: 3}
@@ -930,6 +995,16 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 1587981371}
+    - target: {fileID: 2629267781029906934, guid: 357e18a6444d64543a6dff98e09ce1e1,
+        type: 3}
+      propertyPath: sceneLists.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2629267781029906934, guid: 357e18a6444d64543a6dff98e09ce1e1,
+        type: 3}
+      propertyPath: 'sceneLists.Array.data[4]'
+      value: Scenes/OutdoorsScene_Multiple
+      objectReference: {fileID: 0}
     - target: {fileID: 7213529781222318982, guid: 357e18a6444d64543a6dff98e09ce1e1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1335,13 +1410,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1587981365}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1587981373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1366,9 +1441,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd55de97d5eece40a3bb64b21db39bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attachedObject: {fileID: 0}
   movementSpeed: 10
   boostMultiplier: 2
-  rotationSpeed: 2
+  sensitivityX: 5
+  sensitivityY: 5
+  minimumX: -360
+  maximumX: 360
+  minimumY: -90
+  maximumY: 90
 --- !u!114 &2019960068 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1734450875466983337, guid: 5fa9eb9f16ffee37db487eb63cb8cc7f,

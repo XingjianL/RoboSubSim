@@ -40,5 +40,11 @@ MonoBehaviour:
   - label: gatemiddle
     id: 8
     hierarchyRelation: 0
+  - label: gatepolered
+    id: 9
+    hierarchyRelation: 0
+  - label: gatepoleblue
+    id: 10
+    hierarchyRelation: 0
   autoAssignIds: 1
   startingLabelId: 0

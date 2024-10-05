@@ -6,8 +6,9 @@ using UnityEngine.Perception.GroundTruth;
 using UnityEngine.Rendering.HighDefinition;
 public class RobotCamera : MonoBehaviour
 {
+    private Camera mainCamera;
     // Start is called before the first frame update
-    public Camera mainCamera;
+    public GameObject mainCameraLocation;
     public Camera frontCamera;
     public Camera downCamera;
     public GameObject frontPerceptionCameraObject;
@@ -53,9 +54,25 @@ public class RobotCamera : MonoBehaviour
     private int currentFrames;
     public bool persistentRendering = false;
 
-    public void setMainCamera(){
-        mainCamera = Camera.main;
-        print(mainCamera.name);
+    public void DetachMainCamera(GameObject newParent){
+        bool firstCam = true;
+        foreach (Transform child in mainCameraLocation.transform) {
+            //if (firstCam) {
+            //    child.SetParent(null);
+            //    firstCam = false;
+            //}
+            //child.SetParent(newParent.transform);
+            //Destroy(child.gameObject);
+        }
+    }
+    public void BoundMainCamera(Camera camera){
+        print(camera.name);
+        //foreach (Transform child in mainCameraLocation.transform) {
+        //    Destroy(child.gameObject);
+        //}
+        mainCamera = camera;
+        //camera.transform.SetParent(mainCameraLocation.transform);
+        //print(mainCamera.name);
     }
     public void setCameraExposure(float exposure_s){
         frontCamera.shutterSpeed = exposure_s;
@@ -75,7 +92,6 @@ public class RobotCamera : MonoBehaviour
     }
     void Start()
     {
-        setMainCamera();
         if (SystemInfo.graphicsDeviceID == 0) {
             Debug.Log("Running in Server Mode, Cannot Render Images");
             return;
@@ -97,6 +113,13 @@ public class RobotCamera : MonoBehaviour
             downPerceptionCamera = downPerceptionCameraObject.GetComponent<Camera>();
             //downPerceptionCamera.targetTexture = new RenderTexture(imgWidth, imgHeight, 24);
             setCameraTexture();
+        } else {
+            frontPerceptionCamera = frontPerceptionCameraObject.GetComponent<Camera>();
+            downPerceptionCamera = downPerceptionCameraObject.GetComponent<Camera>();
+            frontPerceptionCamera.enabled = false;
+            downPerceptionCamera.enabled = false;
+            frontCamera.enabled = false;
+            downCamera.enabled = false;
         }
         //MainCameraEnable();
         //renderState = renderStatesEnum.Off;
@@ -113,6 +136,11 @@ public class RobotCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (mainCamera != null) {
+            mainCamera.transform.position = mainCameraLocation.transform.position;
+            mainCamera.transform.rotation = mainCameraLocation.transform.rotation;
+        }
+        
         if (SystemInfo.graphicsDeviceID == 0) {
             
             return;
@@ -168,10 +196,10 @@ public class RobotCamera : MonoBehaviour
         frontPerceptionCamera.enabled = false; // idk why ubuntu has fps issue with this, might be Vulkan stuff
         downPerceptionCamera.enabled = false;
         #endif
-        mainCamera.enabled = true;
+        //mainCamera.enabled = true;
     }
     private void CommandEnable(){
-        mainCamera.enabled = true;
+        //mainCamera.enabled = true;
         switch (currentCommand){
             case CamCommandsID.front_no_percept:
                 frontCamera.enabled = true;
@@ -284,7 +312,7 @@ public class RobotCamera : MonoBehaviour
     //    Down_Capture();
     //}    
     void OnGUI(){
-        if (ShowGUI) {
+        if (ShowGUI && generateData) {
             var button_rect = new Rect(mainCamera.pixelWidth/20, mainCamera.pixelHeight/20, mainCamera.pixelWidth/4, 40);
             //if (GUI.Button(button_rect, "Space to capture, fps:" + (int)(1.0f / Time.smoothDeltaTime))){
             //    renderState = renderStatesEnum.PreRender;

@@ -17,7 +17,7 @@ public class WaterRandomization : MonoBehaviour
     void Start()
     {
         print(waterScript.scatteringColor);
-        print(waterScript.underWaterScatteringColor);
+        //print(waterScript.underWaterScatteringColor);
     }
 
     // Update is called once per frame

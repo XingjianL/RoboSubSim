@@ -39,6 +39,7 @@ public class TCPRobot{
 [RequireComponent (typeof(TCPServer))]
 public class SceneManagement : MonoBehaviour
 {
+    public bool restartTCPServer;
     public Camera playerCamera;
     public Robot_UI ui_script;
     public TextureRandomization textureRandomizationScript;
@@ -47,7 +48,7 @@ public class SceneManagement : MonoBehaviour
     const int POOLMESH = 4;
     string[] tagNames = {"Robot", "Pool", "2023Objective", "Environment", "PoolMesh"};
     List<GameObject[]> gameObjects = new List<GameObject[]>();
-    List<TCPRobot> allRobots = new List<TCPRobot>();
+    public List<TCPRobot> allRobots = new List<TCPRobot>();
     int tagSelect;
     int objectSelect;
     public TCPServer tcpServer;
@@ -57,7 +58,8 @@ public class SceneManagement : MonoBehaviour
     public string[] sceneLists = new string[] { "Scenes/LobbyScene",
                                                 "Scenes/OutdoorsScene",
                                                 "Scenes/G_OutDoors",
-                                                "Scenes/RectPoolScene"};
+                                                "Scenes/RectPoolScene",
+                                                "Scenes/OutdoorsScene_Multiple"};
     public bool sceneRefresh = false;
     public int sceneSelect = 0;
     public bool simCBRefresh = false;
@@ -85,6 +87,24 @@ public class SceneManagement : MonoBehaviour
         }
 
         ui_script.refresh();
+    }
+    public IEnumerator ResetTCPConnectionCoroutine(){
+        //Debug.LogWarning("RESTARTU1");
+        yield return new WaitForSecondsRealtime(2);
+        //Debug.LogWarning("RESTARTU2");
+        setupTCPServer(
+            ui_script.IPaddr.text, 
+            int.Parse(ui_script.Port.text), 
+            false, 
+            int.Parse(ui_script.SendFreq.text));
+        setupSimCBConnect(false);
+        yield return new WaitForSecondsRealtime(2);
+        //Debug.LogWarning("RESTARTU3");
+        setupTCPServer(
+            ui_script.IPaddr.text, 
+            int.Parse(ui_script.Port.text), 
+            true, 
+            int.Parse(ui_script.SendFreq.text));
     }
     public void ResetScene(){
         StartCoroutine(ResetSceneCoroutine());
@@ -115,14 +135,17 @@ public class SceneManagement : MonoBehaviour
         }
         if (robotCFGRefresh){
             robotCFGRefresh = false;
+            for (int i = 0; i < allRobots.Count; i++){
             configRobotParams(
                 mass:   robotCFG[0],
                 volume: robotCFG[1],
                 ldrag:  robotCFG[2],
                 adrag:  robotCFG[3],
                 f_KGF:  robotCFG[4],
-                r_KGF:  robotCFG[5]
+                r_KGF:  robotCFG[5],
+                i
                 );
+            }
         }
         if (camCFGRefresh){
             camCFGRefresh = false;
@@ -140,6 +163,11 @@ public class SceneManagement : MonoBehaviour
                 _rob.setRobotPos();
                 _rob.setRobotRot();
             }
+        }
+        if (restartTCPServer){
+            restartTCPServer = false;
+            //Debug.LogWarning("RESTARTU_");
+            StartCoroutine(ResetTCPConnectionCoroutine());
         }
     }
     /// <summary>
@@ -179,8 +207,10 @@ public class SceneManagement : MonoBehaviour
     }
     public void configRobotControlMode(RobotForce.controlMode mode, int robotID = 0, bool tcp = false){
         GameObject robot = selectObject(ROBOT, robotID);
-        RobotForce script = allRobots[robotID].controlScript;
-        script.controlMethod = mode;
+        for (int i = 0; i < allRobots.Count; i++){
+            RobotForce script = allRobots[i].controlScript;
+            script.controlMethod = mode;
+        }
 
         ui_script.controlModeDropdown.value = (int)mode;
     }

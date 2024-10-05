@@ -174,13 +174,16 @@ public class CommandPacket{
                             process_code = PROCESS_CODES.SIM_DATA;
                             break;
                         }
-                        sceneManagement.setMotorPower(  motor_power[0],motor_power[1],motor_power[2],motor_power[3],
-                                                        motor_power[4],motor_power[5],motor_power[6],motor_power[7]);
+                        for (int i = 0; i < sceneManagement.allRobots.Count; i++){
+                            sceneManagement.setMotorPower(  motor_power[0],motor_power[1],motor_power[2],motor_power[3],
+                                                            motor_power[4],motor_power[5],motor_power[6],motor_power[7],
+                                                            i);
+                        }
                         process_code = PROCESS_CODES.SIM_DATA;
                         //process_code |= PROCESS_CODES.SIM_WDGF;
                         break;
                     case "ACK":
-                        sceneManagement.allCommandsReceived.Add(command.Key);
+                        //sceneManagement.allCommandsReceived.Add(command.Key);
                         if(body[7] != 0) {
                             Debug.LogWarning("Received problematic ACK message from CB. ID: " 
                                 + System.BitConverter.ToUInt16(new byte[] {body[6], body[5]}, 0) 
@@ -296,6 +299,12 @@ public class CommandPacket{
                         sceneManagement.sceneTogglesRefresh = true;
                         process_code = PROCESS_CODES.UNITY_REPLY;
                         break;
+                    case "RESTARTU":
+                        //Debug.LogWarning("RESTARTU");
+                        sceneManagement.allCommandsReceived.Add(command.Key);
+                        sceneManagement.restartTCPServer = true;
+                        process_code = PROCESS_CODES.UNITY_REPLY;
+                        break;
                     case "ROBINIU":
                         sceneManagement.allCommandsReceived.Add(command.Key);
                         float[] rob_init_pose = ParseFloats(body, 6, 9);
@@ -349,7 +358,8 @@ public class CommandPacket{
     public bool sendPacket(NetworkStream nwStream, int bytes_to_send){
         while (bytes_to_send > 0){
             if (!nwStream.CanWrite || !nwStream.CanRead){
-                return true;
+                Debug.LogWarning("error sendPacket" + nwStream.CanWrite + "" + nwStream.CanRead);
+                return false;
             }
             bytes_to_send -= 1;
             //Debug.Log("count: " + body.Length + " i: " + body_counter);
@@ -418,7 +428,7 @@ public class TCPServer : MonoBehaviour
             "SASSISTTN",
             // unity commands
             "CAPTUREU", "SETENVU", "CAMCFGU", "ROBOTSELU", "RANDENVU", "SIMCBTOGU", "ROBCFGU", "SCECFGU",
-            "ROBINIU", "ROBRINU",
+            "ROBINIU", "ROBRINU", "RESTARTU",
             // acknowledge
             "ACK",
             // simCB
@@ -605,13 +615,14 @@ public class TCPServer : MonoBehaviour
     {
         //Debug.Log(currentTime);
         if (isSimCB) {
-            //Debug.Log(simCB_currentTime);
-            if (simCB_currentTime > msPerTransmit && simCB_sendCommandsPool.Count > 0) {
+            if (simCB_sendCommandsPool.Count > 0) {
                 ParseSendData(nwStream, isSimCB);
                 simCB_currentTime = 0;
             }
         } else {
-            if (currentTime > msPerTransmit && sendCommandsPool.Count > 0) {
+            
+            if (sendCommandsPool.Count > 0) {
+                Debug.Log("send"+sendCommandsPool.Count);
                 ParseSendData(nwStream, isSimCB);
                 currentTime = 0;
             }
@@ -752,7 +763,7 @@ public class TCPServer : MonoBehaviour
                 simCB_sendCommandsPool.RemoveRange(1, simCB_sendCommandsPool.Count / 2);
             }
             if (simCB_Connected) {
-                //Debug.Log("Sending simCB packet");
+                Debug.Log("Sending simCB packet" + simCB_sendCommandsPool.Count);
                 if (simCB_sendCommandsPool[0].sendPacket(nwStream, 6)) {
                     if (log){
                         Debug.Log("Sent simCB: " + simCB_sendCommandsPool[0].ToString());
@@ -762,18 +773,19 @@ public class TCPServer : MonoBehaviour
                 return;
             }
             return;
-        }
-        // have too many sends in the pool, clear the oldest half of commands (but leave zero index for sending)
-        if (sendCommandsPool.Count > 128) {
-            Debug.LogWarning("TCP Send Command Pool Overflow");
-            sendCommandsPool.RemoveRange(1, sendCommandsPool.Count / 2);
-        }
-        // process the earlies send command (Last in last out)
-        // because new send may be added to the pool
-        //Debug.Log(sendCommandsPool.Count + nwStream.ToString());
-        if (sendCommandsPool[0].sendPacket(nwStream, 6)) {
-            //Debug.Log("Complete Send to Rust");
-            sendCommandsPool.RemoveAt(0);
+        } else {
+            // have too many sends in the pool, clear the oldest half of commands (but leave zero index for sending)
+            if (sendCommandsPool.Count > 128) {
+                Debug.LogWarning("TCP Send Command Pool Overflow");
+                sendCommandsPool.RemoveRange(1, sendCommandsPool.Count / 2);
+            }
+            // process the earlies send command (Last in last out)
+            // because new send may be added to the pool
+            //Debug.Log(sendCommandsPool.Count + nwStream.ToString());
+            if (sendCommandsPool[0].sendPacket(nwStream, 6)) {
+                Debug.Log("Complete Send to Rust");
+                sendCommandsPool.RemoveAt(0);
+            }
         }
     }
     // Use-case specific function, need to re-write this to interpret whatever data is being sent

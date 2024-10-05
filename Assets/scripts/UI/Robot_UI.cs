@@ -169,6 +169,7 @@ public class Robot_UI : MonoBehaviour
         if (sceneManagement.allCommandsReceived.Count > 0){
             int[] pool_counts = sceneManagement.getTCPPoolCounts();
             robot_state +=  "--Command Received--\n"+
+                            "Total Commands:" + sceneManagement.allCommandsReceived.Count + "\n" +
                             "Latest Command: " + sceneManagement.allCommandsReceived[sceneManagement.allCommandsReceived.Count-1] + "\n" +
                             "RustPool |\tReceive: " + pool_counts[0] + ", Send: " + pool_counts[1] + "\n" +
                             "SimCBPool|\tReceive: " + pool_counts[2] + ", Send: " + pool_counts[3] + "\n";

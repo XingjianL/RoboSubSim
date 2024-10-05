@@ -11,10 +11,18 @@ public class PlayerViewCamera : MonoBehaviour
 
     public float movementSpeed = 10.0f;
     public float boostMultiplier = 2.0f;
-    public float rotationSpeed = 2.0f;
     
     private Vector3 direction;
+    public float sensitivityX = 1F;
+    public float sensitivityY = 1F;
 
+    public float minimumX = -360F;
+    public float maximumX = 360F;
+
+    public float minimumY = -360F;
+    public float maximumY = 360F;
+
+    float rotationY = 0F;
     void Update()
     {
         if (attachedObject == null){
@@ -27,13 +35,12 @@ public class PlayerViewCamera : MonoBehaviour
     }
 
     void PlayerControl(){
-        // Handle rotation using the mouse
-        float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
-        float mouseY = Input.GetAxis("Mouse Y") * rotationSpeed;
+        float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
 
-        // Rotate the object along the y-axis (left/right) and x-axis (up/down)
-        transform.Rotate(Vector3.up, mouseX);
-        transform.Rotate(Vector3.left, mouseY);
+        rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+        rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+
+        transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
 
         // Get movement input (WASD and arrow keys)
         direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));

@@ -37,7 +37,6 @@ public class RobotForce : MonoBehaviour
         PositionVelocity =  10, // 1st, 2nd order
         PositionTorque =    11  // 1st, 3rd order
     }
-    [HideInInspector]
     public controlMode controlMethod = controlMode.motors;
     // Start is called before the first frame update
     void Start()

@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19926d46036fb364fba35de258c02f96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
   ui_script: {fileID: 0}
   textureRandomizationScript: {fileID: 2609277008160692682}
   tcpServer: {fileID: 0}
@@ -56,6 +57,7 @@ MonoBehaviour:
   - Scenes/LobbyScene
   - Scenes/OutdoorsScene
   - Scenes/G_OutDoors
+  - Scenes/RectPoolScene
   sceneRefresh: 0
   sceneSelect: 0
   simCBRefresh: 0
@@ -70,10 +72,18 @@ MonoBehaviour:
   - -1
   camCFGRefresh: 0
   camCFG: 80020000e001000000000000
+  camCFG_floats:
+  - 0.033
+  - 2
   camCFG_Effects: 0
   rgbScreenResizeToggle: 0
   ShowGUIToggle: 0
   sceneToggles: 0
+  sceneCFG_floats:
+  - 5
+  - 0
+  - 0
+  - 0
   sceneTogglesRefresh: 0
   refreshRobotPos: 0
   scatterColorBias: 0
