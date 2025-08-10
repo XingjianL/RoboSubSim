@@ -1,5 +1,5 @@
 # RoboSubSim
-This is a maintained project aimed at simulating underwater environments for autonomous underwater vehicles (particularly Seawolf 8) targeted at the RoboSub Competitions. There are a lot of features yet to be implemented or even decided, the plan is to get it to work before RoboSub 2024.
+This is a project aimed at simulating underwater environments for autonomous underwater vehicles (particularly Seawolf 8) targeted at the RoboSub Competitions.
 
 Here is the paper (for a course project) for various features and architecture in the simulator: [https://drive.google.com/file/d/1eip_NG7Cf2Fsl2w5lEbMnAuSLVgT55id/view?usp=sharing](https://drive.google.com/file/d/1eip_NG7Cf2Fsl2w5lEbMnAuSLVgT55id/view?usp=sharing)
 
